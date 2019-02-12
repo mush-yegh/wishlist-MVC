@@ -39,8 +39,7 @@
         </a>
     </li>
     <li class="item" style="margin-left: auto;">
-        <div style="color: #ffffff;padding: 12px 20px;">hello ${user.firstName}</div>
-        <div style="color: #ffffff;padding: 12px 20px;">hello ${user.lastName}</div>
+        <div style="color: #ffffff;padding: 12px 20px;"><span>hello</span> ${user.firstName}</div>
     </li>
     <li class="item" style="margin-left: auto;"><a href="/logout">Logout</a></li>
 </ul>
