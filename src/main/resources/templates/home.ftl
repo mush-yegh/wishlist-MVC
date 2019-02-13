@@ -15,7 +15,6 @@
 <body>
 
 
-
 <ul class="topNav">
     <li class="item">
         <p class="logo" style="">
@@ -24,18 +23,19 @@
         </p>
     </li>
     <li class="item" style="margin-left: auto;">
-        <div class="usernameBlock">
+        <div class="usernameBlock" id="currentUser" data-id="${user.id}">
             <span id="welcomeText">Welcome</span> ${user.firstName}
+            <#--<input type="hidden" id="currentUserId" value=${user.id}/>-->
         </div>
     </li>
 </ul>
 
 <ul class="leftNav visible">
-    <li class="item"><p >Home</p></li>
+    <li class="item"><p class="homeP">Home</p></li>
     <li class="item"><p id="users">Users</p></li>
     <li class="item"><p id="friends">Friends</p></li>
-    <li class="item"><p >Sent Requests</p></li>
-    <li class="item"><p >Received Request</p></li>
+    <li class="item"><p>Sent Requests</p></li>
+    <li class="item"><p>Received Request</p></li>
     <li class="item" style="margin-left: auto;">
         <a href="/logout">Logout</a>
     </li>
@@ -45,16 +45,7 @@
 <div class="homeContent" style="display: none;">
 
 
-    
-
-
 </body>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
-
-<script>
-    $(document).ready(function () {
-        
-    });//document.ready
 </script>
 </html>

@@ -43,16 +43,16 @@
         <div class="form">
 
             <div class="control">
-                <label for="firstName" class="fa fa-envelope"></label>
+                <label for="firstName" class="fa fa-user"></label>
                 <input id="firstName" placeholder="First name" type="text" name="firstName"></input>
             </div>
             <div class="control">
-                <label for="lastName" class="fa fa-envelope"></label>
+                <label for="lastName" class="fa fa-user"></label>
                 <input id="lastName" placeholder="Last name" type="text" name="lastName"></input>
             </div>
 
             <div class="control">
-                <label for="birthDate" class="fa fa-envelope"></label>
+                <label for="birthDate" class="fa fa-calendar"></label>
                 <input id="birthDate" placeholder="Birth day" type="text" name="birthDate"></input>
             </div>
 

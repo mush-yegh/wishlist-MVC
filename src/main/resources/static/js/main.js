@@ -11,19 +11,38 @@ $(document).ready(function () {
     $('.leftNav').css('left', '-310px');
 
 
-    setTimeout(function(){ $('#welcomeText').remove(); }, 3000);
+    setTimeout(function () {
+        $('#welcomeText').remove();
+    }, 3000);
 
 
 
-    $('#users').click(function() {
+    //load user.js
+    $.getScript( "js/user.js",function (e) {
+        check();
 
-       $.ajax({
-            url: "localhost:8080/users"
-        }).then(function(data) {
-           console.log("data = " + data);
-        });
+    });
 
-    });//click
+    $('#users').click(function () {
+        getUsers();
+    });
 
 
-});
+
+    //load user.js
+    $.getScript( "js/request.js",function (e) {
+        check();
+
+    });
+    //
+
+    $(document).on("click","span.sendRequestIcon", function () {
+        let currId = $('#currentUser').data("id");
+        let userToId = $(this).parent().attr("id");
+        sendRequest(currId, userToId);
+    });
+
+
+
+})
+;
