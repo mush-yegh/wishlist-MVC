@@ -167,6 +167,7 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('input[type="password"]').on('focus', function () {
@@ -174,6 +175,19 @@
             }).on('focusout', function () {
                 $('*').removeClass('password');
             });
+        });
+
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: "http://localhost:8080/users"
+            }).then(function(data) {
+                // $('.greeting-id').append(data.id);
+                // $('.greeting-content').append(data.content);
+                console.log("data = " + data);
+            });
+
         });
 
     </script>
