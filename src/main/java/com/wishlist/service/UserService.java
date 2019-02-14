@@ -17,7 +17,7 @@ public class UserService {
     public List<UserDto> findAllActiveUsers() {
 
         //List<UserEntity> userEntities = userRepository.findAllByActive(1);
-        List<UserEntity> userEntities = userRepository.findTop10AllByActive(1);
+        List<UserEntity> userEntities = userRepository.findAllByActive(1);
         return UserDto.mapEntityListToDto(userEntities);
     }
 }

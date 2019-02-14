@@ -23,4 +23,5 @@ public class Application {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

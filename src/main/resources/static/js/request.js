@@ -3,6 +3,7 @@ function check() {
     console.log("request.js loaded!");
 }
 
+/*
 
 function sendRequest(currId, userToId) {
     console.log("currId " +currId);
@@ -13,7 +14,7 @@ function sendRequest(currId, userToId) {
     data["userFromId"] = currId;
     data["userToId"] = userToId;
 
-        $.ajax({
+        /!*$.ajax({
             type: "POST",
             contentType: "application/json",
             url: "http://localhost:8080/requests/sendRequest",
@@ -23,7 +24,7 @@ function sendRequest(currId, userToId) {
             timeout: 600000,
             success: function (resp) {
 
-                /*$.each(data, function (index, element) {
+                /!*$.each(data, function (index, element) {
                     let row = $('<div/>');
                     row.attr('id', element.id);
                     row.attr('class', 'userRow');
@@ -33,7 +34,7 @@ function sendRequest(currId, userToId) {
                     $('.homeContent').append(row);
 
                 })
-                $('.homeContent').show();*/
+                $('.homeContent').show();*!/
                 console.log("success!");
                 console.log(resp);
 
@@ -42,6 +43,7 @@ function sendRequest(currId, userToId) {
                 let jsonErr = e.responseText;
                 console.log(jsonErr);
             }
-        })
+        })*!/
+    stompClient.send("/app/hello", {}, JSON.stringify(data));
 
-}
+}*/

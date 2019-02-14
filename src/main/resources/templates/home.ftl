@@ -11,6 +11,9 @@
 
     <script src="/js/jquery-3.0.0.min.js"></script>
     <script src="/js/main.js"></script>
+
+    <script src="/js/sockjs.min.js"></script>
+    <script src="/js/stomp.js"></script>
 </head>
 <body>
 
