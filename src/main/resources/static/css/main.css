@@ -11,6 +11,10 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     margin: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .nav, .topNav, .leftNav {
@@ -73,8 +77,9 @@ body {
 .topNav li.item p:hover, .topNav li.item p.active {
     background-color: rgba(0, 0, 0, 0.3);
 }
-p.logo:hover{
-    background-color: transparent!important;
+
+p.logo:hover {
+    background-color: transparent !important;
 }
 
 .leftNav {
@@ -125,7 +130,11 @@ p.logo:hover{
 /*login form*/
 
 div.clear {
-    clear: both;
+    clear: both!important;
+    width: 0!important;
+    height: 0!important;
+    padding: 0!important;
+    margin: 0!important;
 }
 
 div.loginButton {
@@ -152,13 +161,91 @@ ul.topNav > li:first-child {
     width: 153px;
 }
 
-div.usernameBlock {
+div.userBlock {
+    position: relative;
     display: inline-block;
-    padding: 19px 20px;
+    padding: 10px 20px;
     color: #ffffff;
     vertical-align: middle;
 }
-div.logoutDiv{
+
+    div.userBlock > div {
+        float: left;
+        margin: 0 5px;
+        padding: 9px 0px;
+    }
+    div.currUsername{
+        margin-right: 15px!important;
+        font-weight: bold;
+    }
+
+    div.notifIconBlock {
+        cursor: pointer;
+        padding: 9px 0 5px 0 !important;
+    }
+    div.red{
+        color: darkred;
+    }
+    div.red > i{
+        font-size: 1.49em!important;
+    }
+
+    div.notifIconBlock > i {
+        font-size: 1.32em;
+    }
+
+    div.notifMsgBlock{
+        display: none;
+        position: absolute;
+        right: -3px;
+        top: 58px;
+        width: 224px;
+        height: 77px;
+        background: rgba(25, 24, 24, 0.32);
+        /*background-color: #1a75ff;
+        background-color: #002966;*/
+        border-radius: 5px;
+        -webkit-box-shadow: 7px 10px 25px -8px rgba(0,0,0,1);
+        -moz-box-shadow: 7px 10px 25px -8px rgba(0,0,0,1);
+        box-shadow: 7px 10px 25px -8px rgba(0,0,0,1);
+    }
+    div.notifText{
+        margin: 2px 6px 2px 18px;
+        text-align: center;
+    }
+    div.notifText > span{
+        letter-spacing: 1px;
+        font-weight: bold;
+    }
+        div.acceptReject{
+            margin: 9px 0;
+        }
+            div.acceptReject > div{
+                width: 32%;
+                text-align: center;
+                margin: 0 auto;
+                cursor: pointer;
+                padding: 4px 5px 4px 5px;
+                /*border: 1px solid #002966;*/
+                border-radius: 4px;
+                color: #002966;
+                background-color: #ffffff;
+            }
+            div.acceptReject > div:hover{
+                color: #ffffff;
+                background-color: #002966;
+                /*box-shadow: inset 0 0 0 1px #fff;*/
+            }
+            div#accept{
+                float: right;
+                margin: 0 9% 0 auto;
+            }
+            div#reject{
+                float: left;
+                margin: 0 auto 0 9%;
+            }
+
+div.logoutDiv {
     margin: 27px auto 0px;
     font-weight: bold;
     font-size: 16px;
@@ -173,12 +260,13 @@ div.logoutDiv{
 
 }
 
-div.logoutDiv:hover{
+div.logoutDiv:hover {
     background-color: #000000;
 
     color: #ffffff;
 }
-div.logoutDiv > a{
+
+div.logoutDiv > a {
     width: 100%;
     display: block;
     padding: 5px 0;

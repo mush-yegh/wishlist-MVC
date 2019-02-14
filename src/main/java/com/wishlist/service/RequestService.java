@@ -3,6 +3,7 @@ package com.wishlist.service;
 import com.wishlist.persistance.entity.RequestEntity;
 import com.wishlist.persistance.repository.RequestRepository;
 import com.wishlist.service.dto.RequestDto;
+import com.wishlist.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,7 @@ public class RequestService {
         RequestEntity entity = requestRepository.save(requestEntity);
         return RequestDto.mapEntityToDto(entity);
     }
+
+
 
 }

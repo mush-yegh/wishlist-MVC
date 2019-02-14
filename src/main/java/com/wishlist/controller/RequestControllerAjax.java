@@ -23,8 +23,8 @@ public class RequestControllerAjax {
 
     @PostMapping("/sendRequest")
     public ResponseEntity<?> sendFriendRequest(@RequestBody RequestDto requestDto) throws Exception {
-        Long userFromId = Long.parseLong(requestDto.getUserFromId());
-        Long userToId = Long.parseLong(requestDto.getUserToId());
+        Long userFromId = Long.parseLong(requestDto.getSenderId());
+        Long userToId = Long.parseLong(requestDto.getRecipientId());
         System.out.println("userFromId = " + userFromId);
         System.out.println("userToId = " + userToId);
 

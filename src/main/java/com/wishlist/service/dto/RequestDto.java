@@ -1,31 +1,33 @@
 package com.wishlist.service.dto;
 
-import com.wishlist.persistance.entity.RequestEntity;
-import com.wishlist.persistance.entity.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import com.wishlist.persistance.entity.Status;
+import com.wishlist.persistance.entity.RequestEntity;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class RequestDto {
-    private Long id;
+    private Long requestId;
 
-    private String userFromId;
-    private String userToId;
+    private String senderId;
+    private String recipientId;
     private String status;
     private LocalDate requestDate;
     private LocalDate responseDate;
 
+    //private String msg;
+
     public static RequestEntity mapDtoToEntity(RequestDto requestDto){
         return RequestEntity.builder()
-                .requesterId(Long.parseLong(requestDto.getUserFromId()))
-                .receiverId(Long.parseLong(requestDto.getUserToId()))
+                .senderId(Long.parseLong(requestDto.getSenderId()))
+                .recipientId(Long.parseLong(requestDto.getRecipientId()))
                 .status(Status.PENDING)
                 .requestDate(LocalDate.now())
                 .build();
@@ -33,8 +35,9 @@ public class RequestDto {
 
     public static RequestDto mapEntityToDto(RequestEntity requestEntity){
         return RequestDto.builder()
-                .userFromId(String.valueOf(requestEntity.getRequesterId()))
-                .userToId(String.valueOf(requestEntity.getReceiverId()))
+                .requestId(requestEntity.getRequestId())
+                .senderId(String.valueOf(requestEntity.getSenderId()))
+                .recipientId(String.valueOf(requestEntity.getRecipientId()))
                 .status(String.valueOf(requestEntity.getStatus()))
                 .requestDate(requestEntity.getRequestDate())
                 .responseDate(requestEntity.getResponseDate())

@@ -1,9 +1,8 @@
 package com.wishlist.persistance.entity;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -18,14 +17,13 @@ import java.time.LocalDate;
 public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reqId;
+    private Long requestId;
 
-    @Column(name = "requester_id", nullable = false)
-    private Long requesterId;
+    @Column(name = "sender_id", nullable = false)
+    private Long senderId;
 
-    @Column(name = "receiver_id", nullable = false)
-    private Long receiverId;
-
+    @Column(name = "recipient_id", nullable = false)
+    private Long recipientId;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -33,7 +31,6 @@ public class RequestEntity {
 
     @Column(name = "request_date", nullable = false)
     private LocalDate requestDate;
-
 
     @Column(name = "response_date")
     private LocalDate responseDate;

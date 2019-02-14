@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    //left menu show-hide
     $('p.logo').click(function () {
         var leftMenu = $('.leftNav');
         if (leftMenu.hasClass('visible')) {
@@ -10,20 +10,21 @@ $(document).ready(function () {
     });
     $('.leftNav').css('left', '-310px');
 
-
+    //clear 'Welcome' text
     setTimeout(function () {
         $('#welcomeText').remove();
     }, 3000);
 
+    //
+    const loggedInUserId = $('#currentUser').data("id");
 
     //load user.js
     $.getScript("js/user.js", function (e) {
         check();
-
     });
 
     $('#users').click(function () {
-        getUsers();
+        getUsers();//call to user.js
     });
 
 
@@ -33,9 +34,6 @@ $(document).ready(function () {
             check();
 
         });*/
-
-
-    //
 
 
     //load sockjs.js
@@ -50,37 +48,54 @@ $(document).ready(function () {
     });
 
     //SOCKET
-    var socket = new SockJS('/ws');
-    var stompClient = Stomp.over(socket);
+    const socket = new SockJS('/ws');
+    const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
-
         //setConnected(true);
         console.log('Connected: ' + frame);
-
-
-        stompClient.subscribe('/topic/greetings', function (data) {
-
-
-            let message = data.body;
-
-            alert(message);
-
+        stompClient.subscribe('/client/notification', function (data) {
+            //let message = data.body;
+            //alert(message);
+            //console.log(message);
+            notify(data.body);
         });
     });
 
+    function notify(data) {
+        //alert("notify fired");
+
+        let RespBody = JSON.parse(data).body;
+        console.log("resp" + RespBody);
+        let recipientId = RespBody.recipientId;
+        console.log("recipientId " + recipientId);
+        let Sender = RespBody.sender;
+        console.log("sender id = " + Sender.id);
+        if (recipientId === loggedInUserId) {
+            $('.notifIconBlock').addClass("red");
+            //$('.notifIconBlock').css("color", "red");
+            $('.notifIconBlock > i').addClass("animated");
+            $('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
+            console.log("color changed!");
+        } else {
+            console.log("id = " + Sender.id);
+            console.log("loggedInUserId = " + loggedInUserId);
+        }
+
+    }
+
 
     $(document).on("click", "span.sendRequestIcon", function () {
-        let currId = $('#currentUser').data("id");
-        let userToId = $(this).parent().attr("id");
+        //let loggedInUserId = $('#currentUser').data("id");
+        let recipientId = $(this).parent().attr("id");
         //sendRequest(currId, userToId);
         let data = {};
-        data['userFromId'] = currId;
-        data['userToId'] = userToId;
-        alert(123);
-        stompClient.send("/app/hello", {}, JSON.stringify(data));
+        data['senderId'] = loggedInUserId;
+        data['recipientId'] = recipientId;
+        //alert(123);
+        stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
 
-        ////////////////////////////////////////////
+        //===============
         /*$.ajax({
             type: "post",
             contentType: "application/json",
@@ -100,33 +115,20 @@ $(document).ready(function () {
                 console.log("e = " + JSON.stringify(e));
             }
         })*/
-        ////////////////////////////////////////////
+        //===============
 
     });
 
-    /*function sendRequest(currId, userToId) {
-        alert(999);
-        /!*console.log("currId " +currId);
-        console.log("userToId " +userToId);
-        console.log("send_request fired");
+    $('.notifIconBlock').click(function (event) {
+        event.stopPropagation();
+        $('#notifEmpty').fadeIn( "slow" );
+        setTimeout(function () {
+            $('#notifEmpty').fadeOut( "slow" );
+        }, 3000 );
+    });
 
-        stompClient.send("/app/hello", {}, JSON.stringify(data));
-*!/
-    };*/
+    $('html').click(function () {
+        //$('#notifEmpty').toggle($('#notifEmpty').is(':visible'));
+    });
 
-    /*$('.homeContent').on("click","span", function () {
-        alert(123);
-        let currId = $('#currentUser').data("id");
-        let userToId = $(this).parent().attr("id");
-        sendRequest(currId, userToId);
-    });*/
-
-    /*
-        $(".homeContent").delegate('span','click', function () {
-            alert(123);
-        });
-    */
-
-
-})
-;
+});

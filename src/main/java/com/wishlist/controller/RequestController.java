@@ -1,36 +1,43 @@
 package com.wishlist.controller;
 
+import com.wishlist.service.dto.SocketResponseDto;
+import com.wishlist.service.dto.UserDto;
+import com.wishlist.service.UserService;
 import com.wishlist.service.RequestService;
 import com.wishlist.service.dto.RequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 
 @RestController
 public class RequestController {
     @Autowired
     private RequestService requestService;
 
-
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/srvSocket")
+    @SendTo("/client/notification")
     public ResponseEntity<?> sendFriendRequest(@RequestBody RequestDto requestDto) throws Exception {
-        Long userFromId = Long.parseLong(requestDto.getUserFromId());
-        Long userToId = Long.parseLong(requestDto.getUserToId());
-        System.out.println("userFromId = " + userFromId);
-        System.out.println("userToId = " + userToId);
+        Long senderId = Long.parseLong(requestDto.getSenderId());
+        Long recipientId = Long.parseLong(requestDto.getRecipientId());
 
-        UserEntity userEntityTo = userRepository.findOneById(userToId);
+            System.out.println("senderId = " + senderId);
+            System.out.println("recipientId = " + recipientId);
 
-        return new ResponseEntity<>("Saved", HttpStatus.OK);
+        //TO DO -save request to db
+
+        UserDto sender = userService.findUserById(senderId);
+        SocketResponseDto resp = SocketResponseDto.builder()
+                .recipientId(recipientId)
+                .sender(sender)
+                .build();
+
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

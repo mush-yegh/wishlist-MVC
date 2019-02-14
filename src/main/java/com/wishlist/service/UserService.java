@@ -16,8 +16,19 @@ public class UserService {
 
     public List<UserDto> findAllActiveUsers() {
 
-        //List<UserEntity> userEntities = userRepository.findAllByActive(1);
+
         List<UserEntity> userEntities = userRepository.findAllByActive(1);
+        /*
+        List<User> result = users.stream()
+            .filter(x -> x.getUsername().equalsIgnoreCase(username))
+            .collect(Collectors.toList());
+        return result;
+        */
         return UserDto.mapEntityListToDto(userEntities);
+    }
+
+    public UserDto findUserById(Long id){
+        UserEntity userEntity = userRepository.findOneById(id);
+        return UserDto.mapEntityToDto(userEntity);
     }
 }
