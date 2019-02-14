@@ -47,13 +47,9 @@ $(document).ready(function () {
     //load stomp.js
     $.getScript("js/stomp.js", function (e) {
         console.log("stomp loaded");
-
     });
 
-
-    //
-
-
+    //SOCKET
     var socket = new SockJS('/ws');
     var stompClient = Stomp.over(socket);
 
