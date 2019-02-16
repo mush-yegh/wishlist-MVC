@@ -4,10 +4,16 @@ function check() {
 }
 
 function getUsers() {
+
+    let dfd = $.Deferred();
+
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "http://localhost:8080/users",
+
+        async: false,
         //data: JSON.stringify(search),
         //dataType: "json",
         cache: false,
@@ -31,16 +37,22 @@ function getUsers() {
 
                 row.append(icon);
 
-
                 $('.homeContent').append(row);
 
-            })
-            $('.homeContent').show();
+            });
+           // $('.homeContent').show();
+
 
         },
         error: function (e) {
             let jsonErr = e.responseText;
             console.log(jsonErr);
         }
-    })
+    });/*.then(function () {
+        dfd.resolve("Finished fading out!");
+        return dfd.promise();
+    });*/
+
+
+
 }

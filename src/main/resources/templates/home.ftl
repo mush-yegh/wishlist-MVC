@@ -6,15 +6,11 @@
     <title>WishList web-app</title>
     <link rel="icon" type="/image/png" href="/img/favicon.ico"/>
 
-    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/css/font-awesome-animation.css"/>
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
 
     <script src="/js/jquery-3.0.0.min.js"></script>
     <script src="/js/main.js"></script>
 
-    <script src="/js/sockjs.min.js"></script>
-    <script src="/js/stomp.js"></script>
 </head>
 <body>
 
@@ -34,8 +30,11 @@
                 <i class="fa fa-bell faa-ring faa-slow"></i>
             </div>
             <div class="clear"></div>
-            <div class="notifMsgBlock">
-                <div class="notifText"><span id="senderFullName"></span> wants to be friend with you</div>
+            <div class="notifMsgBlock" id="notifMsgBlock">
+                <div class="notifText">
+                    <span id="senderFullName"></span>
+                    <font>wants to be friend with you</font>
+                </div>
                 <div class="acceptReject">
                     <div id="reject">Reject</div>
                     <div id="accept">Accept</div>
@@ -64,8 +63,14 @@
 </ul>
 
 
-<div class="homeContent" style="display: none;"></div>
+<div class="homeContent data-simplebar" style="display: none;" data-simplebar></div>
 
+<div class="loaderBlock" id="loader">
+    <div class="loaderGif"></div>
+</div>
+<audio id="beep" preload="auto">
+    <source src="/audio/beep.mp3" controls></source>
+</audio>
 </body>
 
 </html>

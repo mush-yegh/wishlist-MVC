@@ -18,13 +18,41 @@ $(document).ready(function () {
     //
     const loggedInUserId = $('#currentUser').data("id");
 
+
+
+
     //load user.js
     $.getScript("js/user.js", function (e) {
         check();
     });
 
+    function loaderOn(){
+        $('#loader').fadeIn('fast');
+    }
+    function loaderOff(){
+        $('#loader').hide();
+    }
+
+
+
     $('#users').click(function () {
-        getUsers();//call to user.js
+
+        loaderOn();
+
+        setTimeout(function () {
+            //console.log( getUsers() );
+            getUsers();//call to user.js
+
+            //load simplebar.js
+            $.getScript("js/simplebar.js", function (e) {
+                console.log("simplebar loaded");
+            });
+            loaderOff();
+
+            $('.homeContent').fadeIn('slow');
+
+        },900);
+
     });
 
 
@@ -36,52 +64,65 @@ $(document).ready(function () {
         });*/
 
 
+    let socket;
+    let stompClient;
     //load sockjs.js
     $.getScript("js/sockjs.min.js", function (e) {
         console.log("sockjs loaded");
 
+        socket = new SockJS('/ws');
     });
 
     //load stomp.js
     $.getScript("js/stomp.js", function (e) {
         console.log("stomp loaded");
-    });
 
-    //SOCKET
-    const socket = new SockJS('/ws');
-    const stompClient = Stomp.over(socket);
-
-    stompClient.connect({}, function (frame) {
-        //setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/client/notification', function (data) {
-            //let message = data.body;
-            //alert(message);
-            //console.log(message);
-            notify(data.body);
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            //setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/client/notification', function (data) {
+                //let message = data.body;
+                //alert(message);
+                //console.log(message);
+                notify(data.body);
+            });
         });
     });
 
-    function notify(data) {
-        //alert("notify fired");
+    //SOCKET
+    //const socket = new SockJS('/ws');
+    //const stompClient = Stomp.over(socket);
 
+    // stompClient.connect({}, function (frame) {
+    //     //setConnected(true);
+    //     console.log('Connected: ' + frame);
+    //     stompClient.subscribe('/client/notification', function (data) {
+    //         //let message = data.body;
+    //         //alert(message);
+    //         //console.log(message);
+    //         notify(data.body);
+    //     });
+    // });
+
+    function notify(data) {
         let RespBody = JSON.parse(data).body;
-        console.log("resp" + RespBody);
+            console.log("resp" + RespBody);
         let recipientId = RespBody.recipientId;
-        console.log("recipientId " + recipientId);
+            console.log("recipientId " + recipientId);
         let Sender = RespBody.sender;
-        console.log("sender id = " + Sender.id);
+            console.log("sender id = " + Sender.id);
         if (recipientId === loggedInUserId) {
+            $("#beep")[0].play();
             $('.notifIconBlock').addClass("red");
-            //$('.notifIconBlock').css("color", "red");
             $('.notifIconBlock > i').addClass("animated");
             $('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
-            console.log("color changed!");
+                console.log("color changed!");
+            $('#notifMsgBlock').fadeIn('slow');
         } else {
             console.log("id = " + Sender.id);
             console.log("loggedInUserId = " + loggedInUserId);
         }
-
     }
 
 
@@ -94,6 +135,8 @@ $(document).ready(function () {
         data['recipientId'] = recipientId;
         //alert(123);
         stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
+
+        $('#'+recipientId).slideToggle();
 
         //===============
         /*$.ajax({
@@ -122,6 +165,7 @@ $(document).ready(function () {
     $('.notifIconBlock').click(function (event) {
         event.stopPropagation();
         $('#notifEmpty').fadeIn( "slow" );
+
         setTimeout(function () {
             $('#notifEmpty').fadeOut( "slow" );
         }, 3000 );
@@ -130,5 +174,51 @@ $(document).ready(function () {
     $('html').click(function () {
         //$('#notifEmpty').toggle($('#notifEmpty').is(':visible'));
     });
+
+
+    $(function(){
+        //function1().done(function(){
+            // function1 is done, we can now call function2
+          //  console.log('function1 is done!');
+
+            function2().done(function(){
+                //function2 is done
+                console.log('function2 is done!');
+            });
+        //});
+    });
+
+    function function2(){
+        let dfd = $.Deferred();
+        setTimeout(function(){
+            // doing async stuff
+            console.log('task 1 in function2 is done!');
+            dfd.resolve();
+        }, 2000);
+        return dfd.promise();
+    }
+
+    /*function function1(){
+        var dfrd1 = $.Deferred();
+        var dfrd2= $.Deferred();
+
+        setTimeout(function(){
+            // doing async stuff
+            console.log('task 1 in function1 is done!');
+            dfrd1.resolve();
+        }, 1000);
+
+        setTimeout(function(){
+            // doing more async stuff
+            console.log('task 2 in function1 is done!');
+            dfrd2.resolve();
+        }, 750);
+
+        return $.when(dfrd1, dfrd2).done(function(){
+            console.log('both tasks in function1 are done');
+            // Both asyncs tasks are done
+        }).promise();
+    }*/
+
 
 });

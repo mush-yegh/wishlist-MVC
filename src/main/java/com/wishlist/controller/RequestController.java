@@ -1,5 +1,6 @@
 package com.wishlist.controller;
 
+import com.wishlist.persistance.entity.Status;
 import com.wishlist.service.dto.SocketResponseDto;
 import com.wishlist.service.dto.UserDto;
 import com.wishlist.service.UserService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+
+import java.time.LocalDate;
 
 @RestController
 public class RequestController {
@@ -30,7 +33,10 @@ public class RequestController {
             System.out.println("senderId = " + senderId);
             System.out.println("recipientId = " + recipientId);
 
-        //TO DO -save request to db
+        requestDto.setRequestDate(LocalDate.now());
+        requestDto.setStatus(String.valueOf(Status.PENDING));
+        requestService.saveRequest(requestDto);
+
 
         UserDto sender = userService.findUserById(senderId);
         SocketResponseDto resp = SocketResponseDto.builder()
