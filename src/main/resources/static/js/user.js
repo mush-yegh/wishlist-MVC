@@ -4,16 +4,18 @@ function check() {
 }
 
 function getUsers() {
+    console.log("ajax");
+    //let dfd = $.Deferred();
 
-    let dfd = $.Deferred();
-
-
-    $.ajax({
+    return $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
         type: "GET",
         contentType: "application/json",
         url: "http://localhost:8080/users",
 
-        async: false,
+        //async: false,
         //data: JSON.stringify(search),
         //dataType: "json",
         cache: false,
@@ -21,7 +23,15 @@ function getUsers() {
         success: function (data) {
             //let jsonResp = JSON.stringify(data, null, 4);
             //console.log(jsonResp);
-
+           /* let sum = 0;
+            for (let i = 0; i < 1000000000; i++) {
+                sum+=i;
+            }
+            console.log("sum = " +sum);*/
+            let hasChildByClassName = !!$("div.homeContent").has("div.simplebar-content").length;
+            if(hasChildByClassName){
+                $( "div.simplebar-content > div" ).remove();
+            }
             $.each(data, function (index, element) {
                 let row = $('<div/>');
                 row.attr('id', element.id);
@@ -37,7 +47,12 @@ function getUsers() {
 
                 row.append(icon);
 
-                $('.homeContent').append(row);
+                //$('.homeContent').append(row);
+                if(hasChildByClassName){
+                    $( "div.simplebar-content" ).append(row);
+                }else{
+                    $('.homeContent').append(row);
+                }
 
             });
            // $('.homeContent').show();
@@ -47,8 +62,11 @@ function getUsers() {
         error: function (e) {
             let jsonErr = e.responseText;
             console.log(jsonErr);
+            alert(e.status);
         }
-    });/*.then(function () {
+    });
+
+    /*.then(function () {
         dfd.resolve("Finished fading out!");
         return dfd.promise();
     });*/

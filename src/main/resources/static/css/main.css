@@ -126,6 +126,9 @@ p.logo:hover {
 
 @media screen and (min-width: 320px) and (max-width: 768px) {
     .leftNav {
+        /*display: none;*/
+    }
+    p.logo span{
         display: none;
     }
 }
@@ -315,7 +318,7 @@ div.userRow {
 }
 div.userRow:hover {
     font-style: italic;
-    color: #1a1a1a;
+    /*color: #1a1a1a;*/
 }
 
 div.userRow > span {
@@ -377,6 +380,28 @@ div.loaderGif{
     100% { transform: rotate(360deg); }
 }
 /*================/loader================*/
+
+/*================/info================*/
+div.infoMsg{
+    display: none;
+    position: absolute;
+    top: 55px;
+    left: 0%;
+    width: 100%;
+}
+div.infoMsg > p{
+    width: 46%;
+    margin: 5px auto;
+    text-align: center;
+    padding: 6px 6px 6px 6px;
+    font-size: 17px;
+    color: lime;
+    border: 1px solid rgba(255, 255, 255, 0.51);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.42);
+}
+/*================/info================*/
+
 
 
 

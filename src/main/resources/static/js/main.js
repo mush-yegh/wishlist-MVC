@@ -12,7 +12,8 @@ $(document).ready(function () {
 
     //clear 'Welcome' text
     setTimeout(function () {
-        $('#welcomeText').remove();
+        //$('#welcomeText').remove();
+        $('#welcomeText').fadeOut('slow');
     }, 3000);
 
     //
@@ -26,12 +27,7 @@ $(document).ready(function () {
         check();
     });
 
-    function loaderOn(){
-        $('#loader').fadeIn('fast');
-    }
-    function loaderOff(){
-        $('#loader').hide();
-    }
+
 
 
 
@@ -39,19 +35,26 @@ $(document).ready(function () {
 
         loaderOn();
 
-        setTimeout(function () {
-            //console.log( getUsers() );
-            getUsers();//call to user.js
+        //setTimeout(function () {
+            //getUsers();//call to user.js
+        $.when(getUsers()).done(function(){
+            console.log( "getUsers done" );
 
             //load simplebar.js
             $.getScript("js/simplebar.js", function (e) {
                 console.log("simplebar loaded");
+                setTimeout(function () {
+                    loaderOff();
+                },500);
             });
-            loaderOff();
+
 
             $('.homeContent').fadeIn('slow');
+        });
 
-        },900);
+
+
+        //},900);
 
     });
 
@@ -68,22 +71,17 @@ $(document).ready(function () {
     let stompClient;
     //load sockjs.js
     $.getScript("js/sockjs.min.js", function (e) {
-        console.log("sockjs loaded");
-
         socket = new SockJS('/ws');
+            console.log("sockjs loaded");
     });
 
     //load stomp.js
     $.getScript("js/stomp.js", function (e) {
-        console.log("stomp loaded");
-
+            console.log("stomp loaded");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
-            //setConnected(true);
             console.log('Connected: ' + frame);
             stompClient.subscribe('/client/notification', function (data) {
-                //let message = data.body;
-                //alert(message);
                 //console.log(message);
                 notify(data.body);
             });
@@ -105,25 +103,7 @@ $(document).ready(function () {
     //     });
     // });
 
-    function notify(data) {
-        let RespBody = JSON.parse(data).body;
-            console.log("resp" + RespBody);
-        let recipientId = RespBody.recipientId;
-            console.log("recipientId " + recipientId);
-        let Sender = RespBody.sender;
-            console.log("sender id = " + Sender.id);
-        if (recipientId === loggedInUserId) {
-            $("#beep")[0].play();
-            $('.notifIconBlock').addClass("red");
-            $('.notifIconBlock > i').addClass("animated");
-            $('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
-                console.log("color changed!");
-            $('#notifMsgBlock').fadeIn('slow');
-        } else {
-            console.log("id = " + Sender.id);
-            console.log("loggedInUserId = " + loggedInUserId);
-        }
-    }
+
 
 
     $(document).on("click", "span.sendRequestIcon", function () {
@@ -133,35 +113,106 @@ $(document).ready(function () {
         let data = {};
         data['senderId'] = loggedInUserId;
         data['recipientId'] = recipientId;
-        //alert(123);
+            //alert(123);
         stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
 
         $('#'+recipientId).slideToggle();
+        showInfo('Request successfully sent!');
 
-        //===============
-        /*$.ajax({
-            type: "post",
-            contentType: "application/json",
-            url: "http://localhost:8080/app/requests/sendRequest",
-            data: JSON.stringify(data),
-            //dataType: "json",
-            cache: false,
-            timeout: 600000,
-            success: function (data) {
-                let jsonResp = JSON.stringify(data, null, 4);
-                console.log("jsonResp = " + jsonResp);
-
-            },
-            error: function (e) {
-                let jsonErr = e.responseText;
-                console.log("err" + jsonErr);
-                console.log("e = " + JSON.stringify(e));
-            }
-        })*/
-        //===============
 
     });
 
+    function notify(data) {
+        let RespBody = JSON.parse(data).body;
+            console.log("resp" + RespBody);
+        let notifType = RespBody.notifType;
+            console.log("notifType " + notifType);
+
+        let recipientId = RespBody.recipientId;
+            console.log("recipient id " + recipientId);
+        let Sender = RespBody.sender;
+            console.log("sender id = " + Sender.id);
+        if (recipientId === loggedInUserId) {
+            if (notifType === 'friendRequest'){
+
+                setTimeout(function () {
+                    $("#beep")[0].play();
+                    $('.notifIconBlock').addClass("red");
+                    $('.notifIconBlock > i').addClass("animated");
+                    $('#senderFullName').attr("data-sId", Sender.id);
+                    $('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
+                    console.log("color changed!");
+                    $('#notifMsgBlock').fadeIn('slow');
+                },10000);
+
+            }
+
+        } else {
+            console.log("not for you!");
+        }
+    }
+
+
+    $('#reject').click(function () {
+        let data = {};
+        data["senderId"] = $('#senderFullName').attr("data-sId");
+        data["recipientId"] = loggedInUserId;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/requests/reject",
+            data: JSON.stringify(data),
+            dataType: "json",
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("successfully rejected");
+                $('#notifMsgBlock').fadeOut('slow');
+                showInfo("Successfully rejected");
+            },
+            error: function (e) {
+                let jsonErr = e.responseText;
+                console.log(jsonErr);
+            }
+        });
+    });
+
+    $('#accept').click(function () {
+        let data = {};
+        data["senderId"] = $('#senderFullName').attr("data-sId");
+        data["recipientId"] = loggedInUserId;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/requests/accept",
+            data: JSON.stringify(data),
+            dataType: "json",
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("successfully accepted");
+                $('#notifMsgBlock').fadeOut('slow');
+                showInfo("Congrats! Now You're friends.");
+            },
+            error: function (e) {
+                alert(e);
+                let jsonErr = e.responseText;
+                console.log("qwe = "+jsonErr);
+            }
+        });
+    });
+    
+    function showInfo(msg) {
+        $('#infoText').text(msg);
+
+        $('#info').fadeIn('slow');
+        setTimeout(function () {
+            $('#info').fadeOut('slow');
+        }, 3000);
+    }
+
+
+    /*
     $('.notifIconBlock').click(function (event) {
         event.stopPropagation();
         $('#notifEmpty').fadeIn( "slow" );
@@ -169,13 +220,50 @@ $(document).ready(function () {
         setTimeout(function () {
             $('#notifEmpty').fadeOut( "slow" );
         }, 3000 );
-    });
+    });*/
+
+
+
+
+
+
+
+    //LAOD block show - hide
+    function loaderOn(){
+        $('#loader').fadeIn('fast');
+    }
+    function loaderOff(){
+        $('#loader').hide();
+    }
+
+
+
+
+
 
     $('html').click(function () {
         //$('#notifEmpty').toggle($('#notifEmpty').is(':visible'));
     });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////
     $(function(){
         //function1().done(function(){
             // function1 is done, we can now call function2

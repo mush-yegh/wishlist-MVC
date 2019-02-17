@@ -1,22 +1,13 @@
 package com.wishlist.security.config;
 
 import com.wishlist.security.details.UserDetailsServiceImpl;
-import com.wishlist.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 @Configuration
 @EnableWebSecurity
@@ -30,10 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http//.cors().and()
+                .authorizeRequests()
                 .antMatchers("/js/**", "/css/**", "/fonts/**", "/img/**").permitAll()
                 .antMatchers("/users/**").authenticated()
                 .antMatchers("/signUp/**").permitAll()
+                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .and()
                 .formLogin()
                 .usernameParameter("mail")
@@ -54,6 +47,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
+
+    /*@Bean
+    CorsConfigurationSource corsConfigurationSource()
+    {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("192.168.7.52"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }*/
+
+   /* @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**");
+            }
+        };
+    }*/
 /*
     @Bean
     public SessionRegistry sessionRegistry(){

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SocketResponseDto {
-    //private String msg;
+    private String notifType;
     private Long recipientId;
     private UserDto sender;
 }

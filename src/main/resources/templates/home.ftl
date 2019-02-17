@@ -19,7 +19,7 @@
     <li class="item">
         <p class="logo" style="">
             <i class="fa fa-bars" aria-hidden="true"></i>
-            ACA JAVA
+            <span>ACA JAVA</span>
         </p>
     </li>
     <li class="item" style="margin-left: auto;">
@@ -68,8 +68,11 @@
 <div class="loaderBlock" id="loader">
     <div class="loaderGif"></div>
 </div>
+<div id="info" class="infoMsg">
+    <p id="infoText">something useful</p>
+</div>
 <audio id="beep" preload="auto">
-    <source src="/audio/beep.mp3" controls></source>
+    <source src="/audio/beep.mp3"/>
 </audio>
 </body>
 
