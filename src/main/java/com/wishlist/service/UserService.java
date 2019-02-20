@@ -17,25 +17,26 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    /*private User principal = (User) SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getPrincipal();//null*/
-
-
-
     public List<UserDto> findAllActiveUsers(Authentication auth) {
-
+        //get logged in user
         UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
-
         UserEntity loggedInUser = details.getUserEntity();
 
         List<UserEntity> userEntities = userRepository.findAllByState(State.ACTIVE);
+        //List<UserEntity> friends = userRepository;
 
-        List<UserEntity> result = userEntities.stream()
-                .filter(u -> !u.getMail().equalsIgnoreCase(loggedInUser.getMail()) )
+        //TO DO remove friends from userEntities list
+        //userEntities.removeIf(u -> friends.contains(u));
+
+        //TO DO remove users with pending requests
+
+        userEntities = userEntities.stream()
+                .filter(u -> !u.getMail().equalsIgnoreCase(loggedInUser.getMail())
+                        //&& u -> ...
+                )
                 .collect(Collectors.toList());
 
-        return UserDto.mapEntityListToDto(result);
+        return UserDto.mapEntityListToDto(userEntities);
     }
 
     public UserDto findUserById(Long id){

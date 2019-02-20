@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    //=================== UI ANIMATIONS ===================
     //left menu show-hide
     $('p.logo').click(function () {
         const leftMenu = $('.leftNav');
@@ -18,6 +19,19 @@ $(document).ready(function () {
         },1100);
     }, 3000);
 
+
+    const $loader = $('#loader');
+    //LOADING gif block show - hide
+    function loaderOn(){
+        $loader.fadeIn('fast');
+    }
+    function loaderOff(){
+        $loader.hide();
+    }
+
+    //=================== /UI ANIMATIONS ===================
+
+    //=================== LOAD OTHER SCRIPTS ===================
     //have to remove this field soon :)
     const loggedInUserId = $('#currentUser').data("id");
 
@@ -26,13 +40,13 @@ $(document).ready(function () {
         check();
     });
 
-
     //load simplebar.js
     $.getScript("js/simplebar.js", function (e) {
         console.log("simplebar loaded");
     });
+    //=================== /LOAD OTHER SCRIPTS ===================
 
-
+    //=================== USERS ===================
 
     $('#users').click(function () {
         loaderOn();
@@ -46,7 +60,7 @@ $(document).ready(function () {
             $('.homeContent').fadeIn('slow');
         });
     });
-
+    //=================== /USER ===================
 
     /*
     //load request.js
@@ -56,7 +70,7 @@ $(document).ready(function () {
     });
     */
 
-
+    //=================== WEB SOCKET===================
     let socket;
     let stompClient;
     $.when($.getScript("js/sockjs.min.js")).done(function(){
@@ -76,9 +90,26 @@ $(document).ready(function () {
         });
     });
 
+    /*function sendFriendRequest(recipientId) {
+        $.ajax('/app/srvSocket', {
+            type: 'POST',
+            data: recipientId,
+            contentType: 'text/plain',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                alert("successfully sent!!!");
+            }
+        });
+    }*/
+
     //user row + icon click
     $(document).on("click", "span.sendRequestIcon", function () {
-        //let loggedInUserId = $('#currentUser').data("id");
+        /*let recipientId = $(this).parent().attr("id");
+        sendFriendRequest(recipientId);*/
+
+        let loggedInUserId = $('#currentUser').data("id");
         let recipientId = $(this).parent().attr("id");
         //sendRequest(currId, userToId);
         let data = {};
@@ -121,32 +152,60 @@ $(document).ready(function () {
             console.log("not for you!");
         }
     }
+    //=================== /WEB SOCKET ===================
 
+    //=================== REJECT REQUEST ===================
 
     $('#reject').click(function () {
-        let data = {};
-        data["senderId"] = $('#senderFullName').attr("data-sId");
-        data["recipientId"] = loggedInUserId;
+        //let data = {};
+        //data["senderId"] = $('#senderFullName').attr("data-sId");
+        let senderId = $('#senderFullName').attr("data-sId");
+        //data["recipientId"] = loggedInUserId;
+
+        //let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
         $.ajax({
             type: "POST",
-            contentType: "application/json",
+            //contentType: "application/json",
+            contentType: "text/plain",
             url: "/requests/reject",
-            data: JSON.stringify(data),
-            dataType: "json",
-            cache: false,
-            timeout: 600000,
+
+            //headers: {"X-CSRF-TOKEN": token},
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            //data: JSON.stringify(data),
+            //dataType: "json",
+            data: senderId,
+            //cache: false,
+            //timeout: 600000,
+            xhrFields: {
+                withCredentials: true
+            },
             success: function (data) {
                 console.log("successfully rejected");
                 $('#notifMsgBlock').fadeOut('slow');
                 showInfo("Successfully rejected");
+                resetBell();
             },
             error: function (e) {
                 let jsonErr = e.responseText;
-                console.log(jsonErr);
+                console.log("rejectError = "+jsonErr);
+                showInfo("ooops... something went wrong!");
+                resetBell();
             }
         });
-    });
 
+    });
+    function resetBell(){
+        //have to free all texts
+        $('.notifIconBlock').removeClass("red");
+        $('.notifIconBlock > i').removeClass("animated");
+    }
+    //=================== REJECT REQUEST ===================
+
+    //=================== ACCEPT REQUEST ===================
     $('#accept').click(function () {
         let data = {};
         data["senderId"] = $('#senderFullName').attr("data-sId");
@@ -171,7 +230,9 @@ $(document).ready(function () {
             }
         });
     });
-    
+
+    //=================== /ACCEPT REQUEST ===================
+
     function showInfo(msg) {
         $('#infoText').text(msg);
 
@@ -198,30 +259,10 @@ $(document).ready(function () {
 
 
 
-    const $loader = $('#loader');
-    //LOADING gif block show - hide
-    function loaderOn(){
-        $loader.fadeIn('fast');
-    }
-    function loaderOff(){
-        $loader.hide();
-    }
 
 
 
-
-
-
-    $('html').click(function () {
-        //$('#notifEmpty').toggle($('#notifEmpty').is(':visible'));
-    });
-
-
-
-
-
-
-///////////////////////////////////////////////
+    //=================== SENT REQUEST ===================
     //show sent requests
     $('#sentRequests').click(function () {
         //let data = {};
@@ -246,7 +287,9 @@ $(document).ready(function () {
             }
         });
     });
+    //=================== /SENT REQUEST ===================
 
+    //=================== RECEIVED REQUEST ===================
     //show received requests
     $('#receivedRequests').click(function () {
         //let data = {};
@@ -271,6 +314,7 @@ $(document).ready(function () {
             }
         });
     });
+    //=================== /RECEIVED REQUEST ===================
 
 
 
@@ -280,8 +324,7 @@ $(document).ready(function () {
 
 
 
-
-
+    //=================== DRAFT ===================
 
     /////////////////////////////////////////
     $(function(){
@@ -327,6 +370,17 @@ $(document).ready(function () {
             // Both asyncs tasks are done
         }).promise();
     }*/
+
+
+
+
+
+
+
+
+    $('html').click(function () {
+        //$('#notifEmpty').toggle($('#notifEmpty').is(':visible'));
+    });
 
 
 });

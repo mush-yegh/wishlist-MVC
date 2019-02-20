@@ -66,6 +66,8 @@
         margin-bottom: 10px;
         position: relative;
         width: 100%;
+
+        width: 86%;
     }
     .form .control label {
         position: absolute;
@@ -81,12 +83,15 @@
         font-size: 14px;
         width: 100%;
     }
+    .form .control input:focus{
+        outline-color: transparent;
+    }
 
     /*datepicker*/
     .datepicker{
-        width: 211px !important;
+        width: 264px !important;
         top: 386px !important;
-        left: 559.5px !important;
+        left: 523px !important;
 
         font-size: 14px !important;
     }

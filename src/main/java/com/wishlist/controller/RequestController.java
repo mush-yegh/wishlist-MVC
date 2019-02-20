@@ -18,6 +18,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -41,12 +42,10 @@ public class RequestController {
         System.out.println("senderId = " + senderId);
         System.out.println("recipientId = " + recipientId);
 
-        //requestDto.setSenderId(requestDto.getSenderId());
-        //requestDto.setRecipientId(requestDto.);
-
         requestDto.setRequestDate(LocalDate.now());
         requestDto.setStatus(String.valueOf(Status.PENDING));
 
+        //TO DO check if loggedInUser can send request to receiver
         requestService.saveRequest(requestDto);
 
         UserDto sender = userService.findUserById(senderId);
@@ -59,11 +58,23 @@ public class RequestController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @PostMapping("/requests/reject")
-    public ResponseEntity<?> rejectFriendRequest(@RequestBody RequestDto req) {
-        Optional<RequestDto> requestDto = requestService.rejectRequest(Long.parseLong(req.getRecipientId()),
-                Long.parseLong(req.getSenderId()));
-        return new ResponseEntity<>(requestDto, HttpStatus.OK);
+    @CrossOrigin(origins = "http://localhost:8080")
+    @PostMapping(value = "/requests/reject", consumes = "text/plain")
+    public ResponseEntity<?> rejectFriendRequest(@RequestBody String id, Authentication auth) {
+        Long senderId;
+        try {
+            senderId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            System.out.println("numFormat exception");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<?> response = requestService.rejectRequest(auth, senderId);
+        if (response.isPresent()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Recipient not found", HttpStatus.BAD_REQUEST);
     }
 
     @ResponseBody
@@ -75,16 +86,17 @@ public class RequestController {
     }
 
     @GetMapping("/requests/sentRequests")
-    public ResponseEntity<?> getSentRequests(Authentication auth){
-        UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
+    public ResponseEntity<?> getSentRequests(Authentication auth) {
+        UserDetailsImpl details = (UserDetailsImpl) auth.getPrincipal();
         Long loggedInUserId = details.getUserEntity().getId();
         Optional<List<RequestEntity>> sentRequests = requestService.findUserSentRequests(loggedInUserId);
 
         return new ResponseEntity<>(sentRequests, HttpStatus.OK);
     }
+
     @GetMapping("/requests/receivedRequests")
-    public ResponseEntity<?> getReceivedRequests(Authentication auth){
-        UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
+    public ResponseEntity<?> getReceivedRequests(Authentication auth) {
+        UserDetailsImpl details = (UserDetailsImpl) auth.getPrincipal();
         Long loggedInUserId = details.getUserEntity().getId();
         Optional<List<RequestDto>> receivedRequests = requestService.findUserReceivedRequests(loggedInUserId);
 

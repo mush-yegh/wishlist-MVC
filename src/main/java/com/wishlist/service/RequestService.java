@@ -3,6 +3,8 @@ package com.wishlist.service;
 import com.wishlist.persistance.entity.UserEntity;
 import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.service.dto.RequestDto;
+import com.wishlist.util.StaticMethContainer;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.wishlist.persistance.entity.Status;
 import com.wishlist.persistance.entity.RequestEntity;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import java.time.LocalDate;
 
 import static com.wishlist.service.dto.RequestDto.mapDtoToEntity;
+import static com.wishlist.util.StaticMethContainer.findLoggedInUser;
 
 @Service
 public class RequestService {
@@ -33,14 +36,20 @@ public class RequestService {
     }
 
 
-    public Optional<RequestDto> rejectRequest(Long recipId, Long senderId) {
-        /*Optional<RequestEntity> reqToReject = requestRepository.findOneByRecipientIdAndAndSenderId(recipId, senderId);
+    public Optional<RequestDto> rejectRequest(Authentication auth, Long senderId) {
+        Long recipId = findLoggedInUser(auth).getId();
+        //check if request is present
+        Optional<RequestEntity> reqToReject =
+                 requestRepository.findOneBySentRequestOwnerAndReceivedRequestOwner(
+                       userRepository.findOneById(senderId),
+                        userRepository.findOneById(recipId));
+
         if (reqToReject.isPresent()){
             reqToReject.get().setStatus(Status.REJECTED);
             reqToReject.get().setResponseDate(LocalDate.now());
             requestRepository.save(reqToReject.get());
             return Optional.of(RequestDto.mapEntityToDto(reqToReject.get()));
-        }*/
+        }
         return Optional.empty();
     }
 

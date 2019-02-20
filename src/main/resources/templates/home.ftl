@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
+    <meta name="_csrf" content="${_csrf.token}" />
+
     <title>WishList web-app</title>
     <link rel="icon" type="/image/png" href="/img/favicon.ico"/>
 
