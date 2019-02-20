@@ -118,9 +118,16 @@ $(document).ready(function () {
             //alert(123);
         stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
 
-        $('#'+recipientId).slideToggle();
+        hideUserRow(recipientId);
         showInfo('Request successfully sent!');
     });
+    function hideUserRow(userId) {
+        let $userRow = $('#'+userId);
+        $userRow.slideToggle();
+        setTimeout(function () {
+            $userRow.remove();
+        }, 1000);
+    }
 
     function notify(data) {
         let RespBody = JSON.parse(data).body;
@@ -200,6 +207,7 @@ $(document).ready(function () {
     });
     function resetBell(){
         //have to free all texts
+        $('#notifMsgBlock').fadeOut('slow');
         $('.notifIconBlock').removeClass("red");
         $('.notifIconBlock > i').removeClass("animated");
     }
@@ -207,26 +215,34 @@ $(document).ready(function () {
 
     //=================== ACCEPT REQUEST ===================
     $('#accept').click(function () {
-        let data = {};
+        /*let data = {};
         data["senderId"] = $('#senderFullName').attr("data-sId");
-        data["recipientId"] = loggedInUserId;
+        data["recipientId"] = loggedInUserId;*/
+        let senderId = $('#senderFullName').attr("data-sId");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
         $.ajax({
             type: "POST",
-            contentType: "application/json",
+            contentType: "text/plain",
             url: "/requests/accept",
-            data: JSON.stringify(data),
-            dataType: "json",
-            cache: false,
-            timeout: 600000,
+            data: senderId,
+            xhrFields: {
+                withCredentials: true
+            },
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             success: function (data) {
                 console.log("successfully accepted");
                 $('#notifMsgBlock').fadeOut('slow');
                 showInfo("Congrats! Now You're friends.");
+                resetBell();
             },
             error: function (e) {
-                alert(e);
                 let jsonErr = e.responseText;
-                console.log("qwe = "+jsonErr);
+                console.log("acceptError = "+jsonErr);
+                showInfo("ooops... something went wrong!");
+                resetBell();
             }
         });
     });

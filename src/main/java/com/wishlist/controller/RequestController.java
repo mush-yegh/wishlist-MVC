@@ -45,7 +45,7 @@ public class RequestController {
         requestDto.setRequestDate(LocalDate.now());
         requestDto.setStatus(String.valueOf(Status.PENDING));
 
-        //TO DO check if loggedInUser can send request to receiver
+        //TO DO check if loggedInUser can send request to receiver IMPORTANT
         requestService.saveRequest(requestDto);
 
         UserDto sender = userService.findUserById(senderId);
@@ -77,12 +77,22 @@ public class RequestController {
         return new ResponseEntity<>("Recipient not found", HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseBody
-    @PostMapping("/requests/accept")
-    public ResponseEntity<?> acceptFriendRequest(@RequestBody RequestDto req) {
-        Optional<RequestDto> requestDto = requestService.acceptRequest(Long.parseLong(req.getRecipientId()),
-                Long.parseLong(req.getSenderId()));
-        return new ResponseEntity<>(requestDto, HttpStatus.OK);
+    @PostMapping(value = "/requests/accept", consumes = "text/plain")
+    public ResponseEntity<?> acceptFriendRequest(@RequestBody String id, Authentication auth) {
+        Long senderId;
+        try {
+            senderId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            System.out.println("numFormat exception");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        Optional<?> response = requestService.acceptRequest(auth, senderId);
+
+        if (response.isPresent()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Recipient not found", HttpStatus.NOT_FOUND);
+        //correct HTTP.STATUS for this case ^ - ???
     }
 
     @GetMapping("/requests/sentRequests")

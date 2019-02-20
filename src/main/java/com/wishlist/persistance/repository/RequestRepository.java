@@ -14,7 +14,7 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long> {
 
     //Optional<RequestEntity> findOneByRecipientIdAndAndSenderId(UserEntity recipient, UserEntity sender);
 
-    Optional<RequestEntity> findOneBySentRequestOwnerAndReceivedRequestOwner(UserEntity r, UserEntity s);
+    Optional<RequestEntity> findOneBySentRequestOwnerAndReceivedRequestOwnerAndStatus(UserEntity r, UserEntity s, Status status);
     //RequestEntity findByRequestId(Long id);
 //    Optional<List<RequestEntity>> findAllBySenderIdAndStatusOrderByRequestDateAsc(Long senderId, Status status);
 //    Optional<List<RequestEntity>> findAllByRecipientIdAndStatusOrderByRequestDateAsc(Long senderId, Status status);

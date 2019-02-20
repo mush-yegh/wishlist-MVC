@@ -40,27 +40,36 @@ public class RequestService {
         Long recipId = findLoggedInUser(auth).getId();
         //check if request is present
         Optional<RequestEntity> reqToReject =
-                 requestRepository.findOneBySentRequestOwnerAndReceivedRequestOwner(
-                       userRepository.findOneById(senderId),
-                        userRepository.findOneById(recipId));
+                requestRepository.findOneBySentRequestOwnerAndReceivedRequestOwnerAndStatus(
+                        userRepository.findOneById(senderId),
+                        userRepository.findOneById(recipId),
+                        Status.PENDING);
 
-        if (reqToReject.isPresent()){
+        if (reqToReject.isPresent()) {
             reqToReject.get().setStatus(Status.REJECTED);
             reqToReject.get().setResponseDate(LocalDate.now());
             requestRepository.save(reqToReject.get());
+            //TO DO no need to map requestEntity to dto
             return Optional.of(RequestDto.mapEntityToDto(reqToReject.get()));
         }
         return Optional.empty();
     }
 
-    public Optional<RequestDto> acceptRequest(Long recipId, Long senderId) {
-        /*Optional<RequestEntity> reqToAccept = requestRepository.findOneByRecipientIdAndAndSenderId(recipId, senderId);
+    public Optional<RequestDto> acceptRequest(Authentication auth, Long senderId) {
+        Long recipId = findLoggedInUser(auth).getId();
+        //check if request is present
+        Optional<RequestEntity> reqToAccept =
+                requestRepository.findOneBySentRequestOwnerAndReceivedRequestOwnerAndStatus(
+                        userRepository.findOneById(senderId),
+                        userRepository.findOneById(recipId),
+                        Status.PENDING);
         if (reqToAccept.isPresent()){
             reqToAccept.get().setStatus(Status.ACCEPTED);
             reqToAccept.get().setResponseDate(LocalDate.now());
             requestRepository.save(reqToAccept.get());
+            //TO DO no need to map requestEntity to dto
             return Optional.of(RequestDto.mapEntityToDto(reqToAccept.get()));
-        }*/
+        }
         return Optional.empty();
     }
 
