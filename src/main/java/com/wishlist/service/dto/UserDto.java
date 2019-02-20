@@ -3,18 +3,18 @@ package com.wishlist.service.dto;
 import com.wishlist.persistance.entity.Role;
 import com.wishlist.persistance.entity.State;
 import com.wishlist.persistance.entity.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserDto {
     private Long id;
 
@@ -33,7 +33,7 @@ public class UserDto {
                 .mail(userDto.getMail())
                 //password
                 .birthDate(LocalDate.parse(userDto.getBirthDate()))
-                .active(1)
+                //.active(1)
                 .created(LocalDate.now())
                 .role(Role.USER)
                 .state(State.ACTIVE)

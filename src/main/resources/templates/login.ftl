@@ -43,14 +43,15 @@
         <div class="form">
             <div class="control">
                 <label for="email" class="fa fa-envelope"></label>
-                <input id="email" placeholder="Email" type="email" name="mail"></input>
+                <input id="email" placeholder="Email" type="email" name="mail" required/>
             </div>
             <div class="control">
                 <label for="password" class="fa fa-asterisk"></label>
-                <input id="password" placeholder="Password" type="password" name="password"></input>
+                <input id="password" placeholder="Password" type="password" name="password" required/>
             </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="loginButton">
-                <input type="submit" value="LogIn" class=""></input>
+                <input type="submit" value="LogIn" class=""/>
                 <div class="clear"></div>
             </div>
 

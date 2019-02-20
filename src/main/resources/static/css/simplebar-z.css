@@ -36,9 +36,9 @@ data-simplebar {
     box-sizing: inherit!important;
     resize: none!important;
     position: absolute;
-    top: 0;
+    top: 25px;
     left: 0;
-    bottom: 0;
+    bottom: 25px;
     right: 0;
     padding: 0;
     margin: 0;
@@ -150,7 +150,7 @@ data-simplebar {
     /*right: auto;
     left: 0;*/
    left: auto;
-   right: 0;
+   right: 3px;
 }
 .hs-dummy-scrollbar-size {
     direction: rtl;

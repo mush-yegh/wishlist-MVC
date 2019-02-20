@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import com.wishlist.persistance.entity.Status;
 import com.wishlist.persistance.entity.RequestEntity;
 
+import java.util.List;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -26,8 +28,9 @@ public class RequestDto {
 
     public static RequestEntity mapDtoToEntity(RequestDto requestDto){
         return RequestEntity.builder()
-                .senderId(Long.parseLong(requestDto.getSenderId()))
-                .recipientId(Long.parseLong(requestDto.getRecipientId()))
+                //.sentRequestOwner()
+                //.senderId(Long.parseLong(requestDto.getSenderId()))
+                //.recipientId(Long.parseLong(requestDto.getRecipientId()))
                 .status(Status.PENDING)
                 .requestDate(LocalDate.now())
                 .build();
@@ -36,12 +39,18 @@ public class RequestDto {
     public static RequestDto mapEntityToDto(RequestEntity requestEntity){
         return RequestDto.builder()
                 .requestId(requestEntity.getRequestId())
-                .senderId(String.valueOf(requestEntity.getSenderId()))
-                .recipientId(String.valueOf(requestEntity.getRecipientId()))
+                //.senderId(String.valueOf(requestEntity.getSenderId()))
+                //.recipientId(String.valueOf(requestEntity.getRecipientId()))
                 .status(String.valueOf(requestEntity.getStatus()))
                 .requestDate(requestEntity.getRequestDate())
                 .responseDate(requestEntity.getResponseDate())
                 .build();
+    }
+
+    public static List<RequestDto> mapEntitiesToDtos(List<RequestEntity> requestEntities){
+        return requestEntities.stream()
+                .map(RequestDto::mapEntityToDto)
+                .collect(Collectors.toList());
     }
 
 }

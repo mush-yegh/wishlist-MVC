@@ -1,5 +1,7 @@
 package com.wishlist.controller;
 
+import com.wishlist.persistance.entity.RequestEntity;
+import com.wishlist.security.details.UserDetailsImpl;
 import com.wishlist.service.dto.UserDto;
 import com.wishlist.service.UserService;
 import com.wishlist.service.RequestService;
@@ -7,17 +9,20 @@ import com.wishlist.service.dto.RequestDto;
 import org.springframework.http.HttpStatus;
 import com.wishlist.persistance.entity.Status;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import com.wishlist.service.dto.SocketResponseDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+
+import static com.wishlist.service.dto.UserDto.mapEntityToDto;
 
 @RestController
 public class RequestController {
@@ -36,8 +41,12 @@ public class RequestController {
         System.out.println("senderId = " + senderId);
         System.out.println("recipientId = " + recipientId);
 
+        //requestDto.setSenderId(requestDto.getSenderId());
+        //requestDto.setRecipientId(requestDto.);
+
         requestDto.setRequestDate(LocalDate.now());
         requestDto.setStatus(String.valueOf(Status.PENDING));
+
         requestService.saveRequest(requestDto);
 
         UserDto sender = userService.findUserById(senderId);
@@ -63,7 +72,22 @@ public class RequestController {
         Optional<RequestDto> requestDto = requestService.acceptRequest(Long.parseLong(req.getRecipientId()),
                 Long.parseLong(req.getSenderId()));
         return new ResponseEntity<>(requestDto, HttpStatus.OK);
-        //return ;
+    }
 
+    @GetMapping("/requests/sentRequests")
+    public ResponseEntity<?> getSentRequests(Authentication auth){
+        UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
+        Long loggedInUserId = details.getUserEntity().getId();
+        Optional<List<RequestEntity>> sentRequests = requestService.findUserSentRequests(loggedInUserId);
+
+        return new ResponseEntity<>(sentRequests, HttpStatus.OK);
+    }
+    @GetMapping("/requests/receivedRequests")
+    public ResponseEntity<?> getReceivedRequests(Authentication auth){
+        UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
+        Long loggedInUserId = details.getUserEntity().getId();
+        Optional<List<RequestDto>> receivedRequests = requestService.findUserReceivedRequests(loggedInUserId);
+
+        return new ResponseEntity<>(receivedRequests, HttpStatus.OK);
     }
 }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/css/owl.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="/js/jquery-3.0.0.min.js"></script>
+    <script src="/js/bootstrap-datepicker.min.js"></script>
 
 </head>
 <body>
@@ -44,29 +45,33 @@
 
             <div class="control">
                 <label for="firstName" class="fa fa-user"></label>
-                <input id="firstName" placeholder="First name" type="text" name="firstName"></input>
+                <input id="firstName" placeholder="First name" type="text" name="firstName" required
+                pattern=".{3,}" title="3 charackters minimum"/>
             </div>
             <div class="control">
                 <label for="lastName" class="fa fa-user"></label>
-                <input id="lastName" placeholder="Last name" type="text" name="lastName"></input>
+                <input id="lastName" placeholder="Last name" type="text" name="lastName" required/>
             </div>
 
-            <div class="control">
+            <div class="control" id="datePick">
                 <label for="birthDate" class="fa fa-calendar"></label>
-                <input id="birthDate" placeholder="Birth day" type="text" name="birthDate"></input>
+                <input id="birthDate" placeholder="Birth day" type="text" name="birthDate" required
+                       autocomplete="off" onkeydown="return false;"
+                       data-provide="datepicker"
+                       />
             </div>
 
             <div class="control">
                 <label for="email" class="fa fa-envelope"></label>
-                <input id="email" placeholder="Email" type="email" name="mail"></input>
+                <input id="email" placeholder="Email" type="email" name="mail" required/>
             </div>
             <div class="control">
                 <label for="password" class="fa fa-asterisk"></label>
-                <input id="password" placeholder="Password" type="password" name="password"></input>
+                <input id="password" placeholder="Password" type="password" name="password" required/>
             </div>
-
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="loginButton">
-                <input type="submit" value="SignUp"></input>
+                <input type="submit" value="SignUp"/>
                 <div class="clear"></div>
             </div>
 
@@ -76,10 +81,30 @@
 
     <script>
         $(document).ready(function () {
+
             $('input[type="password"]').on('focus', function () {
                 $('*').addClass('password');
             }).on('focusout', function () {
                 $('*').removeClass('password');
+            });
+
+            /*$( function() {
+                $( "#birthDate" ).datepicker();
+            } );*/
+            //$( "#birthDate" ).datepicker();
+            $('#birthDate').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: '0d',
+                showWeekDays: false,
+                showYears : true,
+                orientation: "bottom left",
+                autoclose: true,
+                keyboardNavigation: true
+                ,startView:2
+                //setView: "2000-01-01",
+
+                //todayBtn: true
+
             });
         });
     </script>

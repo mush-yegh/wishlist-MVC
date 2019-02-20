@@ -40,6 +40,7 @@
                     <div id="accept">Accept</div>
                     <div class="clear"></div>
                 </div>
+                <span class="close"></span>
             </div>
             <div class="notifMsgBlock" id="notifEmpty">
                 <div class="notifText">Empty</div>
@@ -52,13 +53,17 @@
     <li class="item"><p class="homeP">Home</p></li>
     <li class="item"><p id="users">Users</p></li>
     <li class="item"><p id="friends">Friends</p></li>
-    <li class="item"><p>Sent Requests</p></li>
-    <li class="item"><p>Received Request</p></li>
+    <li class="item"><p id="sentRequests">Sent Requests</p></li>
+    <li class="item"><p id="receivedRequests">Received Request</p></li>
     <li class="item"
     ">
     <div class="logoutDiv">
-        <a href="/logout">Logout</a>
+        <#--<a href="/logout">Logout</a>-->
+        <a href="#" onclick="document.getElementById('logout').submit();">Logout</a>
     </div>
+    <form action="/logout" method="post" id="logout">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    </form>
     </li>
 </ul>
 

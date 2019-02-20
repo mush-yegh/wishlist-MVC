@@ -1,30 +1,41 @@
 package com.wishlist.service;
 
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.service.dto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wishlist.persistance.entity.State;
 import org.springframework.stereotype.Service;
+import com.wishlist.persistance.entity.UserEntity;
+import com.wishlist.security.details.UserDetailsImpl;
+import org.springframework.security.core.Authentication;
+import com.wishlist.persistance.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /*private User principal = (User) SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getPrincipal();//null*/
 
-    public List<UserDto> findAllActiveUsers() {
 
 
-        List<UserEntity> userEntities = userRepository.findAllByActive(1);
-        /*
-        List<User> result = users.stream()
-            .filter(x -> x.getUsername().equalsIgnoreCase(username))
-            .collect(Collectors.toList());
-        return result;
-        */
-        return UserDto.mapEntityListToDto(userEntities);
+    public List<UserDto> findAllActiveUsers(Authentication auth) {
+
+        UserDetailsImpl details = (UserDetailsImpl)auth.getPrincipal();
+
+        UserEntity loggedInUser = details.getUserEntity();
+
+        List<UserEntity> userEntities = userRepository.findAllByState(State.ACTIVE);
+
+        List<UserEntity> result = userEntities.stream()
+                .filter(u -> !u.getMail().equalsIgnoreCase(loggedInUser.getMail()) )
+                .collect(Collectors.toList());
+
+        return UserDto.mapEntityListToDto(result);
     }
 
     public UserDto findUserById(Long id){

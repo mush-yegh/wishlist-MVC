@@ -1,3 +1,5 @@
+@import url("bootstrap.css");
+@import url("bootstrap-datepicker.css");
 @import url("font-awesome.min.css");
 @import url("font-awesome-animation.css");
 @import url("simplebar-z.css");
@@ -13,12 +15,12 @@
 body {
     background: url("../img/LBexVMs.jpg");
     font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    margin: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    font-size: 14px !important;
+    margin: 0 !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
 }
 
 .nav, .topNav, .leftNav {
@@ -32,15 +34,15 @@ body {
 }
 
 .nav p, .topNav p, .leftNav p {
-    text-decoration: none;
-    color: #ffffff;
-    padding: 12px 20px;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    padding: 12px 20px !important;
 
-    font-weight: 500;
-    display: inline-block;
-    color: #ffffff;
-    padding: 5px 20px;
-    cursor: pointer;
+    font-weight: 500 !important;
+    display: inline-block ;
+    color: #ffffff !important;
+    padding: 5px 20px !important;
+    cursor: pointer !important;
 }
 
 .leftNav a {
@@ -92,11 +94,11 @@ p.logo:hover {
     margin-top: 56px;
     width: 300px;
     width: 153px;
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 4px;
     bottom: 0;
-    left: 0;
-
+    /*left: 0;*/
+    left:-310px;
 
     padding: 9px 0 0 0;
 }
@@ -202,6 +204,45 @@ div.userBlock {
         font-size: 1.32em;
     }
 
+
+
+
+
+
+div.notifMsgBlock .close {
+    width: 17px;
+    height: 17px;
+    border: 1px solid #000;
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    background: rgb(76, 76, 76);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(76, 76, 76, 1)), color-stop(50%, rgba(45, 45, 45, 1)), color-stop(51%, rgba(32, 32, 32, 1)), color-stop(100%, rgba(37, 37, 37, 1)));
+    background: -moz-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(45, 45, 45, 1) 50%, rgba(32, 32, 32, 1) 51%, rgba(37, 37, 37, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(45, 45, 45, 1) 50%, rgba(32, 32, 32, 1) 51%, rgba(37, 37, 37, 1) 100%);
+    background: -o-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(45, 45, 45, 1) 50%, rgba(32, 32, 32, 1) 51%, rgba(37, 37, 37, 1) 100%);
+    background: -ms-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(45, 45, 45, 1) 50%, rgba(32, 32, 32, 1) 51%, rgba(37, 37, 37, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#4c4c4c', endColorstr = '#252525', GradientType = 0);
+    background: linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(45, 45, 45, 1) 50%, rgba(32, 32, 32, 1) 51%, rgba(37, 37, 37, 1) 100%);
+}
+
+div.notifMsgBlock .close:after {
+    content: 'x';
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    color: #7d7d7d;
+    font-family: arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .6);
+}
+
     div.notifMsgBlock{
         display: none;
         position: absolute;
@@ -210,6 +251,16 @@ div.userBlock {
         width: 224px;
         height: 77px;
         background: rgba(25, 24, 24, 0.32);
+
+        background: -webkit-linear-gradient(bottom,
+                    rgba(25, 24, 24, 0.32)0%,
+                    rgba(25, 24, 24, 0.32)1%,
+                    /*rgba(76, 76, 71, 0.9) 0%,
+                    rgba(76, 76, 71, 0.9) 1%,*/
+                    rgba(58, 57, 52, 0.9) 44%,
+                    rgba(47, 45, 41, 0.9) 45%,
+                    rgba(29, 27, 20, 0.9) 100%);
+
         /*background-color: #1a75ff;
         background-color: #002966;*/
         border-radius: 5px;
@@ -302,8 +353,11 @@ div.homeContent {
 
     max-height: 450px;
     height: 450px;
+
+    max-height: 520px;
+    height: 520px;
     /*overflow: hidden;*/
-    padding: 30px 50px 0px 50px;
+    padding: 5px 50px 0px 50px;
 }
 
 div.userRow {
@@ -334,7 +388,7 @@ div.userRow > span:hover {
 }
 div.userRow:last-child{
     box-shadow: none;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 

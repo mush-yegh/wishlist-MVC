@@ -1,8 +1,10 @@
 package com.wishlist.security.config;
 
 import com.wishlist.security.details.UserDetailsServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,13 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/home")
                 .loginPage("/login")
+
                 /*.and()
                 .authenticationProvider(daoAuthenticationProvider())
                 .sessionManagement().maximumSessions(1)
                 .sessionRegistry(sessionRegistry())*/
+
+                .and().csrf()
                 ;
 
-        http.csrf().disable();
+        //http.csrf().disable();
     }
 
     @Override
@@ -81,6 +86,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }*/
+   /*@Bean
+   public DaoAuthenticationProvider authenticationProvider() {
+       DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+       provider.setUserDetailsService(userDetailsService);
+       provider.setPasswordEncoder(passwordEncoder);
+       return provider;
+   }*/
 
 
 

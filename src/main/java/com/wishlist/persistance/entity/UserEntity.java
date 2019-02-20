@@ -1,21 +1,20 @@
 package com.wishlist.persistance.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
-
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "user")
-//@ToString(exclude = "requests")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,13 +44,15 @@ public class UserEntity {
     @Column(name = "state", nullable = false)
     private State state;
 
-    @Column(name = "active")
-    private Integer active;
-
     @Column(name = "created")
     private LocalDate created;
 
-    /*@OneToMany(mappedBy = "owner")
-    @JsonManagedReference
-    private List<WishEntity> wishes;*/
+    @OneToMany(mappedBy = "sentRequestOwner")
+    @JsonBackReference
+    private List<RequestEntity> sentRequests;
+
+    @OneToMany(mappedBy = "receivedRequestOwner")
+    @JsonBackReference
+    private List<RequestEntity> receivedRequests;
 }
+

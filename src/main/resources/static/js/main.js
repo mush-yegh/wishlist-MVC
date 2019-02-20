@@ -1,26 +1,25 @@
 $(document).ready(function () {
     //left menu show-hide
     $('p.logo').click(function () {
-        var leftMenu = $('.leftNav');
+        const leftMenu = $('.leftNav');
         if (leftMenu.hasClass('visible')) {
             leftMenu.animate({'left': '-310px'}, 600).removeClass('visible');
         } else {
             leftMenu.animate({'left': '0'}, 600).addClass('visible');
         }
     });
-    $('.leftNav').css('left', '-310px');
 
     //clear 'Welcome' text
     setTimeout(function () {
-        //$('#welcomeText').remove();
-        $('#welcomeText').fadeOut('slow');
+        const $welcomeText = $('#welcomeText');
+        $welcomeText.fadeOut('slow');
+        setTimeout(function () {
+            $welcomeText.remove();
+        },1100);
     }, 3000);
 
-    //
+    //have to remove this field soon :)
     const loggedInUserId = $('#currentUser').data("id");
-
-
-
 
     //load user.js
     $.getScript("js/user.js", function (e) {
@@ -28,84 +27,56 @@ $(document).ready(function () {
     });
 
 
+    //load simplebar.js
+    $.getScript("js/simplebar.js", function (e) {
+        console.log("simplebar loaded");
+    });
 
 
 
     $('#users').click(function () {
-
         loaderOn();
-
-        //setTimeout(function () {
-            //getUsers();//call to user.js
+        //getUsers();//call to user.js ajax
         $.when(getUsers()).done(function(){
-            console.log( "getUsers done" );
-
-            //load simplebar.js
-            $.getScript("js/simplebar.js", function (e) {
-                console.log("simplebar loaded");
-                setTimeout(function () {
-                    loaderOff();
-                },500);
-            });
-
+                console.log( "getUsers done" );
+            setTimeout(function () {
+                loaderOff();
+            },500);
 
             $('.homeContent').fadeIn('slow');
         });
-
-
-
-        //},900);
-
     });
 
 
     /*
-        //load request.js
-        $.getScript( "js/request.js",function (e) {
-            check();
+    //load request.js
+    $.getScript( "js/request.js",function (e) {
+        check();
 
-        });*/
+    });
+    */
 
 
     let socket;
     let stompClient;
-    //load sockjs.js
-    $.getScript("js/sockjs.min.js", function (e) {
+    $.when($.getScript("js/sockjs.min.js")).done(function(){
         socket = new SockJS('/ws');
             console.log("sockjs loaded");
-    });
-
-    //load stomp.js
-    $.getScript("js/stomp.js", function (e) {
-            console.log("stomp loaded");
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/client/notification', function (data) {
-                //console.log(message);
-                notify(data.body);
+        //load stomp.js
+        $.getScript("js/stomp.js", function (e) {
+                console.log("stomp loaded");
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                    console.log('Connected: ' + frame);
+                stompClient.subscribe('/client/notification', function (data) {
+                        //console.log(message);
+                    notify(data.body);
+                });
             });
         });
     });
 
-    //SOCKET
-    //const socket = new SockJS('/ws');
-    //const stompClient = Stomp.over(socket);
-
-    // stompClient.connect({}, function (frame) {
-    //     //setConnected(true);
-    //     console.log('Connected: ' + frame);
-    //     stompClient.subscribe('/client/notification', function (data) {
-    //         //let message = data.body;
-    //         //alert(message);
-    //         //console.log(message);
-    //         notify(data.body);
-    //     });
-    // });
-
-
-
-
+    //user row + icon click
     $(document).on("click", "span.sendRequestIcon", function () {
         //let loggedInUserId = $('#currentUser').data("id");
         let recipientId = $(this).parent().attr("id");
@@ -118,8 +89,6 @@ $(document).ready(function () {
 
         $('#'+recipientId).slideToggle();
         showInfo('Request successfully sent!');
-
-
     });
 
     function notify(data) {
@@ -139,8 +108,9 @@ $(document).ready(function () {
                     $("#beep")[0].play();
                     $('.notifIconBlock').addClass("red");
                     $('.notifIconBlock > i').addClass("animated");
-                    $('#senderFullName').attr("data-sId", Sender.id);
-                    $('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
+                    $('#senderFullName').attr("data-sId", Sender.id)
+                        .text(Sender.firstName + ' ' + Sender.lastName);
+                    //$('#senderFullName').text(Sender.firstName + ' ' + Sender.lastName)
                     console.log("color changed!");
                     $('#notifMsgBlock').fadeIn('slow');
                 },10000);
@@ -205,9 +175,10 @@ $(document).ready(function () {
     function showInfo(msg) {
         $('#infoText').text(msg);
 
-        $('#info').fadeIn('slow');
+        const $info = $('#info');
+        $info.fadeIn('slow');
         setTimeout(function () {
-            $('#info').fadeOut('slow');
+            $info.fadeOut('slow');
         }, 3000);
     }
 
@@ -227,13 +198,13 @@ $(document).ready(function () {
 
 
 
-
-    //LAOD block show - hide
+    const $loader = $('#loader');
+    //LOADING gif block show - hide
     function loaderOn(){
-        $('#loader').fadeIn('fast');
+        $loader.fadeIn('fast');
     }
     function loaderOff(){
-        $('#loader').hide();
+        $loader.hide();
     }
 
 
@@ -250,7 +221,56 @@ $(document).ready(function () {
 
 
 
+///////////////////////////////////////////////
+    //show sent requests
+    $('#sentRequests').click(function () {
+        //let data = {};
+        //data["senderId"] = $('#senderFullName').attr("data-sId");
+        //data["recipientId"] = loggedInUserId;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/requests/sentRequests",
+            //data: JSON.stringify(data),
+            dataType: "json",
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("data = " + data);
+                console.log("successfully done getSentRequests call");
+            },
+            error: function (e) {
+                alert(e);
+                let jsonErr = e.responseText;
+                console.log("qwe = "+jsonErr);
+            }
+        });
+    });
 
+    //show received requests
+    $('#receivedRequests').click(function () {
+        //let data = {};
+        //data["senderId"] = $('#senderFullName').attr("data-sId");
+        //data["recipientId"] = loggedInUserId;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/requests/receivedRequests",
+            //data: JSON.stringify(data),
+            dataType: "json",
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("data = " + data);
+                console.log("successfully done getReceivedRequests call");
+            },
+            error: function (e) {
+                alert(e);
+                let jsonErr = e.responseText;
+                console.log("qwe = "+jsonErr);
+            }
+        });
+    });
 
 
 
