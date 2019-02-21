@@ -10,14 +10,9 @@ import java.util.Optional;
 
 
 public interface RequestRepository extends JpaRepository<RequestEntity, Long> {
-//public interface RequestRepository{
-
-    //Optional<RequestEntity> findOneByRecipientIdAndAndSenderId(UserEntity recipient, UserEntity sender);
 
     Optional<RequestEntity> findOneBySentRequestOwnerAndReceivedRequestOwnerAndStatus(UserEntity r, UserEntity s, Status status);
-    //RequestEntity findByRequestId(Long id);
-//    Optional<List<RequestEntity>> findAllBySenderIdAndStatusOrderByRequestDateAsc(Long senderId, Status status);
-//    Optional<List<RequestEntity>> findAllByRecipientIdAndStatusOrderByRequestDateAsc(Long senderId, Status status);
 
-
+    List<RequestEntity> findAllBySentRequestOwner(UserEntity loggedInUser);
+    List<RequestEntity> findAllByReceivedRequestOwner(UserEntity loggedInUser);
 }

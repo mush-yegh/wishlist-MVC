@@ -106,25 +106,28 @@ $(document).ready(function () {
 
     //user row + icon click
     $(document).on("click", "span.sendRequestIcon", function () {
-        /*let recipientId = $(this).parent().attr("id");
-        sendFriendRequest(recipientId);*/
 
-        //let loggedInUserId = $('#currentUser').data("id");
+        $(this).unbind();
+
         let recipientId = $(this).parent().attr("id");
         //sendRequest(currId, userToId);
-        let data = {};
-        ///data['senderId'] = loggedInUserId;
-        data['recipientId'] = recipientId;
-            //alert(123);
+        //let data = {};
+        //data['recipientId'] = recipientId;
         //stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
+
         stompClient.send("/app/srvSocket", {}, recipientId);
 
         hideUserRow(recipientId);
         showInfo('Request successfully sent!');
+
+        /*$.when( stompClient.send("/app/srvSocket", {}, recipientId) ).done(function(){
+            hideUserRow(recipientId);
+            showInfo('Request successfully sent!');
+        });*/
     });
     function hideUserRow(userId) {
         let $userRow = $('#'+userId);
-        $userRow.slideToggle();
+        $userRow.slideUp();
         setTimeout(function () {
             $userRow.remove();
         }, 1000);
@@ -343,7 +346,7 @@ $(document).ready(function () {
             url: "/requests/receivedRequests",
 
             success: function (data) {
-                console.log("successfully done getSentRequests call");
+                console.log("successfully done getReceivedRequests call");
 
                 $( "div.simplebar-content > div" ).remove();
 

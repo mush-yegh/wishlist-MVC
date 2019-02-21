@@ -54,5 +54,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "receivedRequestOwner")
     @JsonBackReference
     private List<RequestEntity> receivedRequests;
+
+    @OneToMany(mappedBy = "wishOwner")
+    @JsonBackReference
+    private List<WishEntity> wishEntities;
 }
 

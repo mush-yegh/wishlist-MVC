@@ -1,20 +1,18 @@
 package com.wishlist.persistance.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.Builder;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "request")
 public class RequestEntity {
@@ -22,16 +20,12 @@ public class RequestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
-    /*@Column(name = "sender_id", nullable = false)
-    private Long senderId;*/
-    @ManyToOne/*(fetch = FetchType.EAGER)*/
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     @JsonManagedReference
     private UserEntity sentRequestOwner;
 
-    /*@Column(name = "recipient_id", nullable = false)
-    private Long recipientId;*/
-    @ManyToOne/*(fetch = FetchType.LAZY)*/
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient_id")
     @JsonManagedReference
     private UserEntity receivedRequestOwner;
@@ -45,6 +39,4 @@ public class RequestEntity {
 
     @Column(name = "response_date")
     private LocalDate responseDate;
-
-
 }

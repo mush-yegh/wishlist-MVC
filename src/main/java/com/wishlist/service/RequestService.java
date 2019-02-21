@@ -1,14 +1,12 @@
 package com.wishlist.service;
 
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.service.dto.RequestDto;
-import com.wishlist.service.dto.UserDto;
-import com.wishlist.util.StaticMethContainer;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import com.wishlist.persistance.entity.Status;
+import org.springframework.stereotype.Service;
+import com.wishlist.persistance.entity.UserEntity;
 import com.wishlist.persistance.entity.RequestEntity;
+import org.springframework.security.core.Authentication;
+import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.persistance.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
 
-import static com.wishlist.service.dto.RequestDto.mapDtoToEntity;
 import static com.wishlist.util.StaticMethContainer.findLoggedInUser;
 
 @Service
@@ -25,7 +22,7 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public RequestDto saveRequest(Authentication auth, Long recipId) {
         Long loggedInUserId = findLoggedInUser(auth).getId();
@@ -80,19 +77,16 @@ public class RequestService {
     }
 
     public List<RequestDto> findUserSentRequests(Authentication auth) {
-        Long loggedInUserId = findLoggedInUser(auth).getId();
+        UserEntity loggedInUser = findLoggedInUser(auth);
 
-        UserEntity userEntity = userRepository.findOneById(loggedInUserId);
-
-        List<RequestEntity> sentRequests = userEntity.getSentRequests();
+        List<RequestEntity> sentRequests = requestRepository.findAllBySentRequestOwner(loggedInUser);
             return RequestDto.mapEntitiesToDtos(sentRequests);
     }
 
     public List<RequestDto> findUserReceivedRequests(Authentication auth) {
-        Long loggedInUserId = findLoggedInUser(auth).getId();
-        UserEntity userEntity = userRepository.findOneById(loggedInUserId);
+        UserEntity loggedInUser = findLoggedInUser(auth);
 
-        List<RequestEntity> receivedRequests = userEntity.getReceivedRequests();
+        List<RequestEntity> receivedRequests = requestRepository.findAllByReceivedRequestOwner(loggedInUser);
         return RequestDto.mapEntitiesToDtos(receivedRequests);
     }
 }

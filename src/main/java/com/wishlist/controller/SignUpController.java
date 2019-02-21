@@ -1,11 +1,12 @@
 package com.wishlist.controller;
 
-import com.wishlist.service.SignUpService;
 import com.wishlist.service.dto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wishlist.service.SignUpService;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class SignUpController {
@@ -13,7 +14,10 @@ public class SignUpController {
     SignUpService service;
 
     @GetMapping("/signUp")
-    public String getSignUpPage(){
+    public String getSignUpPage(Authentication auth){
+        if (auth != null)
+            return "redirect:/home";
+
         return "signUp";
     }
 

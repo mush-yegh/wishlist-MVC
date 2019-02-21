@@ -1,5 +1,6 @@
 package com.wishlist.persistance.repository;
 
+import com.wishlist.persistance.entity.RequestEntity;
 import com.wishlist.persistance.entity.State;
 import com.wishlist.persistance.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findAllByState(State state);
 
     UserEntity findOneById(Long id);
-
 
 }
