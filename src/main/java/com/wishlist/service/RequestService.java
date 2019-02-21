@@ -88,10 +88,11 @@ public class RequestService {
             return RequestDto.mapEntitiesToDtos(sentRequests);
     }
 
-    public Optional<List<RequestDto>> findUserReceivedRequests(Long loggedInUserId) {
-        /*Optional<List<RequestEntity>> requestEntities =
-                requestRepository.findAllByRecipientIdAndStatusOrderByRequestDateAsc(loggedInUserId, Status.PENDING);
-        return requestEntities.map(RequestDto::mapEntitiesToDtos);*/
-        return Optional.empty();
+    public List<RequestDto> findUserReceivedRequests(Authentication auth) {
+        Long loggedInUserId = findLoggedInUser(auth).getId();
+        UserEntity userEntity = userRepository.findOneById(loggedInUserId);
+
+        List<RequestEntity> receivedRequests = userEntity.getReceivedRequests();
+        return RequestDto.mapEntitiesToDtos(receivedRequests);
     }
 }

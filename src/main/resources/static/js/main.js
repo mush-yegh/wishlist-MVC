@@ -279,23 +279,16 @@ $(document).ready(function () {
 
 
 
-    //=================== SENT REQUEST ===================
+    //=================== SENT REQUESTS ===================
     //show sent requests
     $('#sentRequests').click(function () {
         loaderOn();
-        //let data = {};
-        //data["senderId"] = $('#senderFullName').attr("data-sId");
-        //data["recipientId"] = loggedInUserId;
+
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "/requests/sentRequests",
-            //data: JSON.stringify(data),
-            //dataType: "json",
-            //cache: false,
-            //timeout: 600000,
             success: function (data) {
-                //console.log("data = " + data.sender);
                 console.log("successfully done getSentRequests call");
 
                 $( "div.simplebar-content > div" ).remove();
@@ -333,38 +326,65 @@ $(document).ready(function () {
             error: function (e) {
                 alert(e);
                 let jsonErr = e.responseText;
-                console.log("qwe = "+jsonErr);
+                console.log("sentReqErr = "+jsonErr);
             }
         });
     });
-    //=================== /SENT REQUEST ===================
+    //=================== /SENT REQUESTS ===================
 
-    //=================== RECEIVED REQUEST ===================
+    //=================== RECEIVED REQUESTS ===================
     //show received requests
     $('#receivedRequests').click(function () {
-        //let data = {};
-        //data["senderId"] = $('#senderFullName').attr("data-sId");
-        //data["recipientId"] = loggedInUserId;
+        loaderOn();
+
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "/requests/receivedRequests",
-            //data: JSON.stringify(data),
-            dataType: "json",
-            cache: false,
-            timeout: 600000,
+
             success: function (data) {
-                console.log("data = " + data);
-                console.log("successfully done getReceivedRequests call");
+                console.log("successfully done getSentRequests call");
+
+                $( "div.simplebar-content > div" ).remove();
+
+                if (data) {
+                    let titleRow = $('<div/>');
+                    titleRow.attr('class', 'sentRequestRow');
+                    titleRow.append("<p class='sentRequestRowTitle'>Sender</p>");
+                    titleRow.append("<p class='sentRequestRowTitle'>Sent date</p>");
+                    titleRow.append("<p class='sentRequestRowTitle'>Status</p>");
+                    $("div.simplebar-content").append(titleRow);
+
+                    $.each(data, function (index, element) {
+                        let row = $('<div/>');
+                        row.attr('id', element.requestId);
+                        row.attr('class', 'sentRequestRow');
+                        row.append("<p class='sentRequestInfoItem'>" + element.sender.firstName + " " + element.sender.lastName + "</p>")
+                        row.append("<p class='sentRequestInfoItem'>" + element.requestDate + "</p>");
+                        row.append("<p class='sentRequestInfoItem'>" + element.status + "</p>");
+                        $("div.simplebar-content").append(row);
+                    });
+                }else{
+                    let emptyRequests = $('<div/>');
+                    emptyRequests.attr('class', 'emptyRequests');
+                    emptyRequests.text("You have no received request!");
+                    $("div.simplebar-content").append(emptyRequests);
+                }
+
+                setTimeout(function () {
+                    loaderOff();
+                },500);
+
+                $('.homeContent').fadeIn('slow');
             },
             error: function (e) {
                 alert(e);
                 let jsonErr = e.responseText;
-                console.log("qwe = "+jsonErr);
+                console.log("sentReqErr = "+jsonErr);
             }
         });
     });
-    //=================== /RECEIVED REQUEST ===================
+    //=================== /RECEIVED REQUESTS ===================
 
 
 

@@ -39,12 +39,7 @@ public class RequestController {
     public ResponseEntity<?> sendFriendRequest(@RequestBody String rId, Authentication auth) throws Exception {
 
         Long recipientId = Long.parseLong(rId);
-
-       // System.out.println("senderId = " + senderId);
-        System.out.println("recipientId = " + recipientId);
-
-        //requestDto.setRequestDate(LocalDate.now());
-        //requestDto.setStatus(String.valueOf(Status.PENDING));
+            System.out.println("recipientId = " + recipientId);
 
         //TO DO check if loggedInUser can send request to receiver IMPORTANT
         requestService.saveRequest(auth, recipientId);
@@ -107,10 +102,9 @@ public class RequestController {
 
     @GetMapping("/requests/receivedRequests")
     public ResponseEntity<?> getReceivedRequests(Authentication auth) {
-        UserDetailsImpl details = (UserDetailsImpl) auth.getPrincipal();
-        Long loggedInUserId = details.getUserEntity().getId();
-        Optional<List<RequestDto>> receivedRequests = requestService.findUserReceivedRequests(loggedInUserId);
-
-        return new ResponseEntity<>(receivedRequests, HttpStatus.OK);
+        List<RequestDto> receivedRequests = requestService.findUserReceivedRequests(auth);
+        if (receivedRequests.size() > 0)
+            return new ResponseEntity<>(receivedRequests, HttpStatus.OK);
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.NO_CONTENT);
     }
 }
