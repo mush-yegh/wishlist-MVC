@@ -18,8 +18,11 @@ import java.util.stream.Collectors;
 public class RequestDto {
     private Long requestId;
 
-    private String senderId;
-    private String recipientId;
+    //private String senderId;
+    private UserDto sender;
+    //private String recipientId;
+    private UserDto recipient;
+
     private String status;
     private LocalDate requestDate;
     private LocalDate responseDate;
@@ -39,7 +42,9 @@ public class RequestDto {
     public static RequestDto mapEntityToDto(RequestEntity requestEntity){
         return RequestDto.builder()
                 .requestId(requestEntity.getRequestId())
+                .sender(UserDto.mapEntityToDto(requestEntity.getSentRequestOwner()))
                 //.senderId(String.valueOf(requestEntity.getSenderId()))
+                .recipient(UserDto.mapEntityToDto(requestEntity.getReceivedRequestOwner()))
                 //.recipientId(String.valueOf(requestEntity.getRecipientId()))
                 .status(String.valueOf(requestEntity.getStatus()))
                 .requestDate(requestEntity.getRequestDate())

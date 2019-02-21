@@ -90,17 +90,18 @@ p.logo:hover {
 
 .leftNav {
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    height: 100%;
-    margin-top: 56px;
-    width: 300px;
+    /*height: 100%;*/
+    height: calc(100% - 61px);
+    /*margin-top: 56px;*/
+    /*width: 300px;*/
     width: 153px;
     position: absolute;
-    top: 4px;
-    bottom: 0;
+    /*top: 4px;
+    bottom: 0;*/
     /*left: 0;*/
     left:-310px;
 
-    padding: 9px 0 0 0;
+    /*padding: 9px 0 0 0;*/
 }
 
 .leftNav li.item {
@@ -462,11 +463,36 @@ div.infoMsg > p{
 /*================/info================*/
 
 
+div.sentRequestRow{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-columns: 50% 24% 24%;
+}
 
+div.sentRequestRow > p.sentRequestInfoItem{
+    text-align: center;
+}
+p.sentRequestRowTitle{
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+}
 
+div.emptyRequests{
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    padding-top: 15px;
 
-
-
+    margin: 5px auto;
+    text-align: center;
+    padding: 6px 6px 6px 6px;
+    font-size: 17px;
+    color: lime;
+    border: 1px solid rgba(255, 255, 255, 0.51);
+    border-radius: 4px;
+}
 
 
 

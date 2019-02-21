@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.wishlist.service.dto.UserDto.mapEntityToDto;
+import static com.wishlist.util.StaticMethContainer.findLoggedInUser;
 
 @RestController
 public class RequestController {
@@ -35,20 +36,20 @@ public class RequestController {
 
     @MessageMapping("/srvSocket")
     @SendTo("/client/notification")
-    public ResponseEntity<?> sendFriendRequest(@RequestBody RequestDto requestDto) throws Exception {
-        Long senderId = Long.parseLong(requestDto.getSenderId());
-        Long recipientId = Long.parseLong(requestDto.getRecipientId());
+    public ResponseEntity<?> sendFriendRequest(@RequestBody String rId, Authentication auth) throws Exception {
 
-        System.out.println("senderId = " + senderId);
+        Long recipientId = Long.parseLong(rId);
+
+       // System.out.println("senderId = " + senderId);
         System.out.println("recipientId = " + recipientId);
 
-        requestDto.setRequestDate(LocalDate.now());
-        requestDto.setStatus(String.valueOf(Status.PENDING));
+        //requestDto.setRequestDate(LocalDate.now());
+        //requestDto.setStatus(String.valueOf(Status.PENDING));
 
         //TO DO check if loggedInUser can send request to receiver IMPORTANT
-        requestService.saveRequest(requestDto);
+        requestService.saveRequest(auth, recipientId);
 
-        UserDto sender = userService.findUserById(senderId);
+        UserDto sender = userService.findUserById(findLoggedInUser(auth).getId());
         SocketResponseDto resp = SocketResponseDto.builder()
                 .notifType("friendRequest")
                 .recipientId(recipientId)
@@ -97,11 +98,11 @@ public class RequestController {
 
     @GetMapping("/requests/sentRequests")
     public ResponseEntity<?> getSentRequests(Authentication auth) {
-        UserDetailsImpl details = (UserDetailsImpl) auth.getPrincipal();
-        Long loggedInUserId = details.getUserEntity().getId();
-        Optional<List<RequestEntity>> sentRequests = requestService.findUserSentRequests(loggedInUserId);
 
-        return new ResponseEntity<>(sentRequests, HttpStatus.OK);
+        List<RequestDto> sentRequests = requestService.findUserSentRequests(auth);
+        if (sentRequests.size() > 0)
+            return new ResponseEntity<>(sentRequests, HttpStatus.OK);
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/requests/receivedRequests")

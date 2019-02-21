@@ -3,6 +3,7 @@ package com.wishlist.service;
 import com.wishlist.persistance.entity.UserEntity;
 import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.service.dto.RequestDto;
+import com.wishlist.service.dto.UserDto;
 import com.wishlist.util.StaticMethContainer;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,15 @@ public class RequestService {
     @Autowired
     UserRepository userRepository;
 
-    public RequestDto saveRequest(RequestDto requestDto) {
-        RequestEntity requestEntity = mapDtoToEntity(requestDto);
-        requestEntity.setSentRequestOwner(userRepository.findOneById(Long.valueOf(requestDto.getSenderId())));
-        requestEntity.setReceivedRequestOwner(userRepository.findOneById(Long.valueOf(requestDto.getRecipientId())));
+    public RequestDto saveRequest(Authentication auth, Long recipId) {
+        Long loggedInUserId = findLoggedInUser(auth).getId();
+//        RequestEntity requestEntity = mapDtoToEntity(requestDto);
+        RequestEntity requestEntity = RequestEntity.builder()
+                .sentRequestOwner(userRepository.findOneById(loggedInUserId))
+                .receivedRequestOwner(userRepository.findOneById(recipId))
+                .status(Status.PENDING)
+                .requestDate(LocalDate.now())
+                .build();
 
         RequestEntity entity = requestRepository.save(requestEntity);
         return RequestDto.mapEntityToDto(entity);
@@ -73,14 +79,13 @@ public class RequestService {
         return Optional.empty();
     }
 
-    public Optional<List<RequestEntity>> findUserSentRequests(Long loggedInUserId) {
+    public List<RequestDto> findUserSentRequests(Authentication auth) {
+        Long loggedInUserId = findLoggedInUser(auth).getId();
+
         UserEntity userEntity = userRepository.findOneById(loggedInUserId);
 
         List<RequestEntity> sentRequests = userEntity.getSentRequests();
-        if (sentRequests.size() > 0)
-            return Optional.of(sentRequests);
-
-        return Optional.empty();
+            return RequestDto.mapEntitiesToDtos(sentRequests);
     }
 
     public Optional<List<RequestDto>> findUserReceivedRequests(Long loggedInUserId) {

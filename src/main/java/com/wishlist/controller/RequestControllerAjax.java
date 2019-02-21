@@ -21,7 +21,7 @@ public class RequestControllerAjax {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @PostMapping("/sendRequest")
+    /*@PostMapping("/sendRequest")
     public ResponseEntity<?> sendFriendRequest(@RequestBody RequestDto requestDto) throws Exception {
         Long userFromId = Long.parseLong(requestDto.getSenderId());
         Long userToId = Long.parseLong(requestDto.getRecipientId());
@@ -37,5 +37,5 @@ public class RequestControllerAjax {
         );
 
         return new ResponseEntity<>("send", HttpStatus.OK);
-    }
+    }*/
 }
