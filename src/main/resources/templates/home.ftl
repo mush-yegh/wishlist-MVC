@@ -45,7 +45,7 @@
                     <div id="accept">Accept</div>
                     <div class="clear"></div>
                 </div>
-                <span class="close"></span>
+                <span class="close" id="notifCloseIcon"></span>
             </div>
             <div class="notifMsgBlock" id="notifEmpty">
                 <div class="notifText">Empty</div>

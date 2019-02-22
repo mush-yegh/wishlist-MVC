@@ -402,7 +402,14 @@ $(document).ready(function () {
                 console.log("successfully done getWishList call");
 
                 $( "div.simplebar-content > div" ).remove();
-                if (data) {
+                //addWish button
+                let wishRow = $('<div/>');
+                wishRow.attr('class', 'wishListAddButton');
+                wishRow.append("<span class='wishRowIcon' title='Add'><i class='fa fa-plus'></i></span>");
+                wishRow.append("<div class='clear'></div>");
+                $("div.simplebar-content").append(wishRow);
+
+                if (data.length !== 0) {
                     $.each(data, function (index, element) {
                         let wishRow = $('<div/>');
                         wishRow.attr('class', 'wishListRow');
@@ -412,16 +419,6 @@ $(document).ready(function () {
                         wishRow.append("<div class='clear'></div>");
                         $("div.simplebar-content").append(wishRow);
                     });
-
-                    /*$.each(data, function (index, element) {
-                        let row = $('<div/>');
-                        row.attr('id', element.requestId);
-                        row.attr('class', 'sentRequestRow');
-                        row.append("<p class='sentRequestInfoItem'>" + element.sender.firstName + " " + element.sender.lastName + "</p>")
-                        row.append("<p class='sentRequestInfoItem'>" + element.requestDate + "</p>");
-                        row.append("<p class='sentRequestInfoItem'>" + element.status + "</p>");
-                        $("div.simplebar-content").append(row);
-                    });*/
                 }else{
                     let emptyWishList = $('<div/>');
                     emptyWishList.attr('class', 'emptyRequests');
@@ -445,6 +442,15 @@ $(document).ready(function () {
     //=================== /WishList ===================
 
 
+
+
+
+    $('#notifCloseIcon').click(function () {
+        $('#notifMsgBlock').fadeOut('slow');
+        //showInfo("Received requests");
+        resetBell();
+
+    });
 
 
     //=================== DRAFT ===================

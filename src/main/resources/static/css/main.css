@@ -494,6 +494,24 @@ div.emptyRequests{
     border-radius: 4px;
 }
 
+div.wishListAddButton{
+    width: 100%;
+    padding: 1px 0 1px 0;
+    margin: 5px auto 7px auto;
+    font-size: 18px;
+    color: #e6e6e6;
+}
+div.wishListAddButton > span.wishRowIcon{
+    float: right;
+    width: 3.6%;
+    margin: 0 1px 0 5px;
+    text-align: center;
+    border: 1px solid #e6e6e6;
+    padding: 0 5px;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+
 div.wishListRow{
     width: 84%;
     padding: 6px 0 12px 0;
@@ -516,7 +534,7 @@ div.wishListRow > span.wishRowIcon{
     cursor: pointer;
     color: #e6e6e6;
 }
-div.wishListRow > span.wishRowIcon:hover {
+div.wishListRow > span.wishRowIcon:hover, div.wishListAddButton > span.wishRowIcon:hover {
     border: 1px solid #1a1a1a;
     color: #1a1a1a;
 }

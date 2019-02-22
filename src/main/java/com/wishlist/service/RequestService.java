@@ -89,4 +89,6 @@ public class RequestService {
         List<RequestEntity> receivedRequests = requestRepository.findAllByReceivedRequestOwner(loggedInUser);
         return RequestDto.mapEntitiesToDtos(receivedRequests);
     }
+
+
 }

@@ -3,9 +3,12 @@ package com.wishlist.service;
 import com.wishlist.service.dto.UserDto;
 import com.wishlist.persistance.entity.State;
 import org.springframework.stereotype.Service;
+import com.wishlist.persistance.entity.Status;
 import com.wishlist.persistance.entity.UserEntity;
+import com.wishlist.persistance.entity.RequestEntity;
 import org.springframework.security.core.Authentication;
 import com.wishlist.persistance.repository.UserRepository;
+import com.wishlist.persistance.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -18,21 +21,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RequestRepository requestRepository;
+
     public List<UserDto> findAllActiveUsers(Authentication auth) {
         //get logged in user
-        String loggedInUserMail = findLoggedInUser(auth).getMail();
+        UserEntity loggedInUser = findLoggedInUser(auth);
+        String loggedInUserMail = loggedInUser.getMail();
 
         List<UserEntity> userEntities = userRepository.findAllByState(State.ACTIVE);
-        //List<UserEntity> friends = userRepository;
 
-        //TO DO remove friends from userEntities list
-        //userEntities.removeIf(u -> friends.contains(u));
+        List<RequestEntity> sentRequests = requestRepository.findAllBySentRequestOwnerAndStatusIsNot(loggedInUser, Status.REJECTED);
+        List<Long> senderIds = sentRequests.stream()
+                .map(r -> r.getReceivedRequestOwner().getId())
+                .collect(Collectors.toList());
+        List<RequestEntity> receivedRequests = requestRepository.findAllByReceivedRequestOwnerAndStatusIsNot(loggedInUser, Status.REJECTED);
+        List<Long> receiverIds = receivedRequests.stream()
+                .map(r -> r.getSentRequestOwner().getId())
+                .collect(Collectors.toList());
 
-        //TO DO remove users with pending requests
-
+        //filter all users having request by status ACCEPT or PENDING
         userEntities = userEntities.stream()
                 .filter(u -> !u.getMail().equalsIgnoreCase(loggedInUserMail)
-                        //&& u -> ...
+                        && !senderIds.contains(u.getId())
+                        && !receiverIds.contains(u.getId())
                 )
                 .collect(Collectors.toList());
 
