@@ -494,6 +494,33 @@ div.emptyRequests{
     border-radius: 4px;
 }
 
+div.wishListRow{
+    width: 84%;
+    padding: 6px 0 12px 0;
+    margin: 5px auto 7px auto;
+    font-size: 18px;
+    color: #e6e6e6;
+    box-shadow: 0px 1px 0px 0px rgba(179,179,179,0.54);
+}
+div.wishListRow > span.wishTitle{
+    float: left;
+    width: 80%;
+}
+div.wishListRow > span.wishRowIcon{
+    float: right;
+    width: 3.6%;
+    margin: 0 1px 0 5px;
+    text-align: center;
+    border: 1px solid #e6e6e6;
+    padding: 0 5px;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+div.wishListRow > span.wishRowIcon:hover {
+    border: 1px solid #1a1a1a;
+    color: #1a1a1a;
+}
+
 
 
 

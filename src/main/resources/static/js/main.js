@@ -389,10 +389,60 @@ $(document).ready(function () {
     });
     //=================== /RECEIVED REQUESTS ===================
 
+    //=================== WishList ===================
+    $('#wishList').click(function () {
+        loaderOn();
 
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/wishes",
 
+            success: function (data) {
+                console.log("successfully done getWishList call");
 
+                $( "div.simplebar-content > div" ).remove();
+                if (data) {
+                    $.each(data, function (index, element) {
+                        let wishRow = $('<div/>');
+                        wishRow.attr('class', 'wishListRow');
+                        wishRow.append("<span class='wishTitle'>" + element.title + "</span>");
+                        wishRow.append("<span class='wishRowIcon' title='Delete'><i class='fa fa-trash'></i></span>");
+                        wishRow.append("<span class='wishRowIcon' title='Edit'><i class='fa fa-edit'></i></span>");
+                        wishRow.append("<div class='clear'></div>");
+                        $("div.simplebar-content").append(wishRow);
+                    });
 
+                    /*$.each(data, function (index, element) {
+                        let row = $('<div/>');
+                        row.attr('id', element.requestId);
+                        row.attr('class', 'sentRequestRow');
+                        row.append("<p class='sentRequestInfoItem'>" + element.sender.firstName + " " + element.sender.lastName + "</p>")
+                        row.append("<p class='sentRequestInfoItem'>" + element.requestDate + "</p>");
+                        row.append("<p class='sentRequestInfoItem'>" + element.status + "</p>");
+                        $("div.simplebar-content").append(row);
+                    });*/
+                }else{
+                    let emptyWishList = $('<div/>');
+                    emptyWishList.attr('class', 'emptyRequests');
+                    emptyWishList.text("You have no wish !");
+                    $("div.simplebar-content").append(emptyWishList);
+                }
+
+                setTimeout(function () {
+                    loaderOff();
+                },500);
+
+                $('.homeContent').fadeIn('slow');
+            },
+            error: function (e) {
+                alert(e);
+                let jsonErr = e.responseText;
+                console.log("getWishListErr = "+jsonErr);
+            }
+        });
+    });
+    //=================== /WishList ===================
 
 
 

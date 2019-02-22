@@ -1,29 +1,21 @@
 package com.wishlist.controller;
 
-import com.wishlist.persistance.entity.RequestEntity;
-import com.wishlist.security.details.UserDetailsImpl;
 import com.wishlist.service.dto.UserDto;
 import com.wishlist.service.UserService;
 import com.wishlist.service.RequestService;
 import com.wishlist.service.dto.RequestDto;
 import org.springframework.http.HttpStatus;
-import com.wishlist.persistance.entity.Status;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.wishlist.service.dto.SocketResponseDto;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.wishlist.service.dto.UserDto.mapEntityToDto;
 import static com.wishlist.util.StaticMethContainer.findLoggedInUser;
 
 @RestController

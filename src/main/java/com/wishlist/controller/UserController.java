@@ -25,7 +25,6 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getActiveUsers(Authentication auth) {
         List<UserDto> users = service.findAllActiveUsers(auth);
         return new ResponseEntity<>(users, HttpStatus.OK);
-        //return ResponseEntity.ok(users);
     }
 
 }
