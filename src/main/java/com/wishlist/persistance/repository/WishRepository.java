@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface WishRepository extends JpaRepository<WishEntity, Long> {
     List<WishEntity> findAllByWishOwner(UserEntity owner);
+
+    WishEntity findOneById(Long wishId);
+
+    WishEntity findOneByIdAndWishOwner(Long id, UserEntity owner);
 }

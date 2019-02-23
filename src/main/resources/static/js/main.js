@@ -219,7 +219,7 @@ $(document).ready(function () {
 
     });
     function resetBell(){
-        //have to free all texts
+        //have to clear all texts
         $('#notifMsgBlock').fadeOut('slow');
         $('.notifIconBlock').removeClass("red");
         $('.notifIconBlock > i').removeClass("animated");
@@ -228,9 +228,6 @@ $(document).ready(function () {
 
     //=================== ACCEPT REQUEST ===================
     $('#accept').click(function () {
-        /*let data = {};
-        data["senderId"] = $('#senderFullName').attr("data-sId");
-        data["recipientId"] = loggedInUserId;*/
         let senderId = $('#senderFullName').attr("data-sId");
         let header = $("meta[name='_csrf_header']").attr("content");
         let token = $("meta[name='_csrf']").attr("content");
@@ -327,7 +324,7 @@ $(document).ready(function () {
                 }else{
                     let emptyRequests = $('<div/>');
                     emptyRequests.attr('class', 'emptyRequests');
-                    emptyRequests.text("You have no sent request!");
+                    emptyRequests.text("No sent request !");
                     $("div.simplebar-content").append(emptyRequests);
                 }
 
@@ -383,7 +380,7 @@ $(document).ready(function () {
                 }else{
                     let emptyRequests = $('<div/>');
                     emptyRequests.attr('class', 'emptyRequests');
-                    emptyRequests.text("You have no received request!");
+                    emptyRequests.text("No received request !");
                     $("div.simplebar-content").append(emptyRequests);
                 }
 

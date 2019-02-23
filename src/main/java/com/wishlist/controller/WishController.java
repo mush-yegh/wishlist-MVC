@@ -24,13 +24,37 @@ public class WishController {
         return new ResponseEntity<>(wishes, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getUserWishById(Authentication auth, @PathVariable String id){
+        Long wishId;
+        try {
+            wishId = Long.parseLong(id);
+        }catch (NumberFormatException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Optional<WishDto> wishToEdit = service.getWishById(wishId);
+        if (wishToEdit.isPresent()){
+            return new ResponseEntity<>(wishToEdit, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping
     public ResponseEntity<?> createWish(Authentication auth, @RequestBody WishDto wishDto) {
         Optional<WishDto> wish = service.createWish(auth, wishDto);
         if (wish.isPresent())
             return new ResponseEntity<>(wish, HttpStatus.OK);
 
-        return new ResponseEntity<>(HttpStatus.CONFLICT);//or HttpStatus.FAILED_DEPENDENCY
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateWish(Authentication auth, @RequestBody WishDto wishDto){
+
+        Optional<WishDto> wish = service.updateWish(auth, wishDto);
+        if (wish.isPresent())
+            return new ResponseEntity<>(wish, HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
