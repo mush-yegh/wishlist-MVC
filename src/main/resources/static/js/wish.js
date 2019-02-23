@@ -1,0 +1,232 @@
+function checkWish() {
+
+    console.log("wish.js loaded!");
+}
+
+//=================== WishList ===================
+
+$('#wishList').click(function () {
+    loaderOn();
+    $('.homeContent').hide();
+    $( "div.simplebar-content > div" ).remove();
+
+    //getWishList();
+    $.when(getWishList()).done(function(){
+
+        setTimeout(function () {
+            loaderOff();
+            $('.homeContent').fadeIn('slow');
+        },700);
+    });
+
+    /*$.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/wishes",
+
+        success: function (data) {
+            console.log("successfully done getWishList call");
+            //addWish button
+            let wishRow = $('<div/>');
+            wishRow.attr('class', 'wishListAddButton');
+            wishRow.append("<span class='wishRowIcon' title='Add' id='wishRowIconAdd'><i class='fa fa-plus'></i></span>");
+            wishRow.append("<div class='clear'></div>");
+            $("div.simplebar-content").append(wishRow);
+
+            if (data.length !== 0) {
+                $.each(data, function (index, element) {
+                    let wishRow = $('<div/>');
+                    wishRow.attr('class', 'wishListRow');
+                    wishRow.append("<span class='wishTitle'>" + element.title + "</span>");
+                    wishRow.append("<span class='wishRowIcon' title='Delete'><i class='fa fa-trash'></i></span>");
+                    wishRow.append("<span class='wishRowIcon' title='Edit'><i class='fa fa-edit'></i></span>");
+                    wishRow.append("<div class='clear'></div>");
+                    $("div.simplebar-content").append(wishRow);
+                });
+            }else{
+                let emptyWishList = $('<div/>');
+                emptyWishList.attr('class', 'emptyRequests');
+                emptyWishList.text("You have no wish !");
+                $("div.simplebar-content").append(emptyWishList);
+            }
+
+            setTimeout(function () {
+                loaderOff();
+                $('.homeContent').fadeIn('slow');
+            },700);
+
+
+        },
+        error: function (e) {
+            alert(e);
+            let jsonErr = e.responseText;
+            console.log("getWishListErr = "+jsonErr);
+        }
+    });*/
+});
+function getWishList(){
+    let $simplebarContent = $("div.simplebar-content");
+    return $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/wishes",
+        success: function (data) {
+            console.log("successfully done getWishList call");
+            //addWish buttons
+            let wishRow = $('<div/>');
+            wishRow.attr('class', 'wishListAddButton');
+            wishRow.append("<span class='wishRowIcon' title='Add' id='wishRowIconAdd'><i class='fa fa-plus'></i></span>");
+            wishRow.append("<div class='clear'></div>");
+            $simplebarContent.append(wishRow);
+
+            if (data.length !== 0) {
+                $.each(data, function (index, element) {
+                    let wishRow = $('<div/>');
+                    wishRow.attr('class', 'wishListRow');
+                    wishRow.append("<span class='wishTitle'>" + element.title + "</span>");
+                    wishRow.append("<span class='wishRowIcon' title='Delete'><i class='fa fa-trash'></i></span>");
+                    wishRow.append("<span class='wishRowIcon' title='Edit'><i class='fa fa-edit'></i></span>");
+                    wishRow.append("<div class='clear'></div>");
+                    $simplebarContent.append(wishRow);
+                });
+            }else{
+                let emptyWishList = $('<div/>');
+                emptyWishList.attr('class', 'emptyRequests');
+                emptyWishList.text("You have no wish !");
+                $simplebarContent.append(emptyWishList);
+            }
+        },
+        error: function (e) {
+            alert(e);
+            let jsonErr = e.responseText;
+            console.log("getWishListErr = "+jsonErr);
+            let emptyWishList = $('<div/>');
+            emptyWishList.attr('class', 'emptyRequests');
+            emptyWishList.text("ooops :"+jsonErr);
+            $simplebarContent.append(emptyWishList);
+        }
+    });
+}
+//=================== /WishList ===================
+
+
+//=================== ADD WISH BLOCK===================
+
+$(document).on("click", "#wishRowIconAdd", function () {
+    loaderOn();
+    $('.homeContent').hide();
+    $( "div.simplebar-content > div" ).remove();
+
+
+    let wishBlock = $('<div/>');
+    wishBlock.attr('class', 'newWishBlock');
+
+    wishBlock.append("<div class='newWishBlockTitle'>ADD NEW WISH</div>");
+
+    wishBlock.append(createWishRowInput('Title'));
+    wishBlock.append(createWishRowInput('Link'));
+    wishBlock.append(createWishRowTxtArea('Description'));
+    wishBlock.append(createButtons());
+    //wishBlock.append(createWishRow('Price'));
+
+    wishBlock.append("<div class='clear'></div>");
+    $("div.simplebar-content").append(wishBlock);
+
+
+    setTimeout(function () {
+        loaderOff();
+        $('.homeContent').fadeIn('slow');
+    },700);
+
+});
+function createWishRowInput(name){
+    let wishRow = $('<div/>');
+    wishRow.attr('class', 'wishRow');
+    wishRow.append(
+        "<div class='wishPropertyTitle'>" +
+        "<label for='wish"+ name+"'>"+name+"</label>" +
+        "</div>");
+    wishRow.append(
+        "<div class='wishPropertyInput'>" +
+        "<input type='text' id='wish"+name+"' name='wish"+name+"'/>" +
+        "</div>");
+    wishRow.append("<div class='clear'></div>");
+    return wishRow;
+}
+function createWishRowTxtArea(name){
+    let wishRow = $('<div/>');
+    wishRow.attr('class', 'wishRow');
+    wishRow.append(
+        "<div class='wishPropertyTitle'>" +
+        "<label for='wish"+ name+"'>"+name+"</label>" +
+        "</div>");
+    wishRow.append(
+        "<div class='wishPropertyInput'>" +
+        "<textarea type='text' id='wish"+name+"' name='wish"+name+"'/>" +
+        "</div>");
+    wishRow.append("<div class='clear'></div>");
+    return wishRow;
+}
+function createButtons(){
+    let wishRow = $('<div/>');
+    wishRow.attr('class', 'wishRow');
+    wishRow.append("<div class='wishSaveButton' id='saveNewWish'>Save</div>");
+    wishRow.append("<div class='wishCancelButton' id='cancelNewWish'>Cencel</div>");
+    wishRow.append("<div class='clear'></div>");
+    return wishRow;
+}
+//=================== /ADD WISH BLOCK ===================
+
+
+//=================== ADD WISH BLOCK CANCEL BUTTON CLICK ===================
+
+$(document).on("click", "#cancelNewWish", function () {
+    $("#wishList").trigger( "click" );
+});
+//=================== /ADD WISH BLOCK CANCEL BUTTON CLICK ===================
+
+//=================== ADD WISH BLOCK SAVE BUTTON CLICK ===================
+
+$(document).on("click", "#saveNewWish", function () {
+    let title = $('#wishTitle').val();
+    if (!title.trim()){
+        showInfo("Title can't be empty!");
+        return false;
+    }
+    let data = {};
+    let link = $('#wishLink').val();
+    let description = $('#wishDescription').val();
+
+    data['title'] = title;
+    data['link'] = link;
+    data['description'] = description;
+
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/wishes",
+        data: JSON.stringify(data),
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (data) {
+            console.log("new wish  successfully saved");
+            //showInfo("Successfully added");
+            $("#wishList").trigger( "click" );
+        },
+        error: function (e) {
+            let jsonErr = e.responseText;
+            console.log("rejectError = "+jsonErr);
+            showInfo("ooops... something went wrong!");
+        }
+    });
+
+
+});
+
+//=================== /ADD WISH BLOCK SAVE BUTTON CLICK ===================

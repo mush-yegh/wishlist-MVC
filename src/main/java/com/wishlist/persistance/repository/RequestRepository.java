@@ -20,5 +20,4 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long> {
 
     List<RequestEntity> findAllBySentRequestOwnerAndStatusIsNot(UserEntity loggedInUser, Status status);
 
-    //List<Long> findAllSentRequestOwnerBy
 }

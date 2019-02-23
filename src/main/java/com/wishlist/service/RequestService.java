@@ -52,7 +52,6 @@ public class RequestService {
             reqToReject.get().setStatus(Status.REJECTED);
             reqToReject.get().setResponseDate(LocalDate.now());
             requestRepository.save(reqToReject.get());
-            //TO DO no need to map requestEntity to dto
             return Optional.of(RequestDto.mapEntityToDto(reqToReject.get()));
         }
         return Optional.empty();
@@ -70,7 +69,6 @@ public class RequestService {
             reqToAccept.get().setStatus(Status.ACCEPTED);
             reqToAccept.get().setResponseDate(LocalDate.now());
             requestRepository.save(reqToAccept.get());
-            //TO DO no need to map requestEntity to dto
             return Optional.of(RequestDto.mapEntityToDto(reqToAccept.get()));
         }
         return Optional.empty();

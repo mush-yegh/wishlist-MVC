@@ -20,14 +20,14 @@ $(document).ready(function () {
     }, 3000);
 
 
-    const $loader = $('#loader');
+    /*const $loader = $('#loader');
     //LOADING gif block show - hide
     function loaderOn(){
         $loader.fadeIn('fast');
     }
     function loaderOff(){
         $loader.hide();
-    }
+    }*/
 
     //=================== /UI ANIMATIONS ===================
 
@@ -40,6 +40,12 @@ $(document).ready(function () {
         check();
     });
 
+    //load wish.js
+    $.getScript("js/wish.js", function (e) {
+        console.log("wish loaded");
+        checkWish();
+    });
+
     //load simplebar.js
     $.getScript("js/simplebar.js", function (e) {
         console.log("simplebar loaded");
@@ -50,14 +56,17 @@ $(document).ready(function () {
 
     $('#users').click(function () {
         loaderOn();
+        $('.homeContent').hide();
+        $( "div.simplebar-content > div" ).remove();
+
         //getUsers();//call to user.js ajax
         $.when(getUsers()).done(function(){
                 console.log( "getUsers done" );
             setTimeout(function () {
                 loaderOff();
-            },500);
+                $('.homeContent').fadeIn('slow');
+            },700);
 
-            $('.homeContent').fadeIn('slow');
         });
     });
     //=================== /USER ===================
@@ -106,7 +115,7 @@ $(document).ready(function () {
 
     //user row + icon click
     $(document).on("click", "span.sendRequestIcon", function () {
-
+        //prevent double click
         $(this).unbind();
 
         let recipientId = $(this).parent().attr("id");
@@ -253,7 +262,7 @@ $(document).ready(function () {
 
     //=================== /ACCEPT REQUEST ===================
 
-    function showInfo(msg) {
+    /*function showInfo(msg) {
         $('#infoText').text(msg);
 
         const $info = $('#info');
@@ -261,7 +270,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $info.fadeOut('slow');
         }, 3000);
-    }
+    }*/
 
 
     /*
@@ -286,6 +295,8 @@ $(document).ready(function () {
     //show sent requests
     $('#sentRequests').click(function () {
         loaderOn();
+        $('.homeContent').hide();
+        $( "div.simplebar-content > div" ).remove();
 
         $.ajax({
             type: "GET",
@@ -322,9 +333,9 @@ $(document).ready(function () {
 
                 setTimeout(function () {
                     loaderOff();
-                },500);
+                    $('.homeContent').fadeIn('slow');
+                },700);
 
-                $('.homeContent').fadeIn('slow');
             },
             error: function (e) {
                 alert(e);
@@ -339,6 +350,8 @@ $(document).ready(function () {
     //show received requests
     $('#receivedRequests').click(function () {
         loaderOn();
+        $('.homeContent').hide();
+        $( "div.simplebar-content > div" ).remove();
 
         $.ajax({
             type: "GET",
@@ -376,9 +389,9 @@ $(document).ready(function () {
 
                 setTimeout(function () {
                     loaderOff();
-                },500);
+                    $('.homeContent').fadeIn('slow');
+                },700);
 
-                $('.homeContent').fadeIn('slow');
             },
             error: function (e) {
                 alert(e);
@@ -389,58 +402,11 @@ $(document).ready(function () {
     });
     //=================== /RECEIVED REQUESTS ===================
 
+
+
     //=================== WishList ===================
-    $('#wishList').click(function () {
-        loaderOn();
 
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/wishes",
-
-            success: function (data) {
-                console.log("successfully done getWishList call");
-
-                $( "div.simplebar-content > div" ).remove();
-                //addWish button
-                let wishRow = $('<div/>');
-                wishRow.attr('class', 'wishListAddButton');
-                wishRow.append("<span class='wishRowIcon' title='Add'><i class='fa fa-plus'></i></span>");
-                wishRow.append("<div class='clear'></div>");
-                $("div.simplebar-content").append(wishRow);
-
-                if (data.length !== 0) {
-                    $.each(data, function (index, element) {
-                        let wishRow = $('<div/>');
-                        wishRow.attr('class', 'wishListRow');
-                        wishRow.append("<span class='wishTitle'>" + element.title + "</span>");
-                        wishRow.append("<span class='wishRowIcon' title='Delete'><i class='fa fa-trash'></i></span>");
-                        wishRow.append("<span class='wishRowIcon' title='Edit'><i class='fa fa-edit'></i></span>");
-                        wishRow.append("<div class='clear'></div>");
-                        $("div.simplebar-content").append(wishRow);
-                    });
-                }else{
-                    let emptyWishList = $('<div/>');
-                    emptyWishList.attr('class', 'emptyRequests');
-                    emptyWishList.text("You have no wish !");
-                    $("div.simplebar-content").append(emptyWishList);
-                }
-
-                setTimeout(function () {
-                    loaderOff();
-                },500);
-
-                $('.homeContent').fadeIn('slow');
-            },
-            error: function (e) {
-                alert(e);
-                let jsonErr = e.responseText;
-                console.log("getWishListErr = "+jsonErr);
-            }
-        });
-    });
-    //=================== /WishList ===================
-
+    //=================== ADD WISH ===================
 
 
 
@@ -451,8 +417,6 @@ $(document).ready(function () {
         resetBell();
 
     });
-
-
     //=================== DRAFT ===================
 
     /////////////////////////////////////////
@@ -512,4 +476,28 @@ $(document).ready(function () {
     });
 
 
-});
+});// /document ready
+
+
+//==============================================
+
+    //LOADING gif block show - hide
+    function loaderOn(){
+        //$loader.fadeIn('fast');
+        $('#loader').fadeIn('fast');
+    }
+    function loaderOff(){
+        //$loader.hide();
+        $('#loader').hide();
+    }
+
+//==============================================
+    function showInfo(msg) {
+        $('#infoText').text(msg);
+
+        const $info = $('#info');
+        $info.fadeIn('slow');
+        setTimeout(function () {
+            $info.fadeOut('slow');
+        }, 3000);
+    }

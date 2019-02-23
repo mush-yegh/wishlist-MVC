@@ -13,7 +13,7 @@ public class SignUpController {
     @Autowired
     SignUpService service;
 
-    @GetMapping("/signUp")
+    @GetMapping(value = {"/signUp","/"})
     public String getSignUpPage(Authentication auth){
         if (auth != null)
             return "redirect:/home";

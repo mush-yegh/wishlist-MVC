@@ -40,7 +40,7 @@ public class UserService {
                 .map(r -> r.getSentRequestOwner().getId())
                 .collect(Collectors.toList());
 
-        //filter all users having request by status ACCEPT or PENDING
+        //filter all users having requests by status ACCEPT or PENDING
         userEntities = userEntities.stream()
                 .filter(u -> !u.getMail().equalsIgnoreCase(loggedInUserMail)
                         && !senderIds.contains(u.getId())
@@ -51,7 +51,7 @@ public class UserService {
         return UserDto.mapEntityListToDto(userEntities);
     }
 
-    public UserDto findUserById(Long id){
+    public UserDto findUserById(Long id) {
         UserEntity userEntity = userRepository.findOneById(id);
         return UserDto.mapEntityToDto(userEntity);
     }

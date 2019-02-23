@@ -540,6 +540,81 @@ div.wishListRow > span.wishRowIcon:hover, div.wishListAddButton > span.wishRowIc
 }
 
 
+/*======================================================*/
+div.newWishBlock{
+    color:#ffffff;
+}
+div.newWishBlockTitle{
+    margin: 5px 5px 54px 5px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 21px;
+    letter-spacing: 2px;
+}
+div.wishRow{
+    margin: 5px 5px 10px 5px;
+    font-size: 17px;
+}
+div.wishPropertyTitle{
+    float: left;
+    width: 20%;
+    text-align: right;
+}
+div.wishPropertyInput{
+    float: left;
+    width: 75%;
+    margin-left: 4%;
+    text-align: center;
+}
+div.wishPropertyInput > input{
+    width: 80%;
+    border-radius: 3px;
+    border: none;
+    padding: 1px 1% 1px 2%;
+}
+div.wishPropertyInput > textarea{
+    width: 80%;
+    max-width: 80%;
+    border-radius: 3px;
+    border: none;
+    padding: 1px 1% 1px 2%;
+    height: 81px;
+    min-height: 81px;
+    max-height: 81px;
+}
+div.wishSaveButton{
+    float: right;
+    width: 15%;
+    padding: 9px 18px 7px 18px;
+    margin: 15px 7% 5px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #ffffff;
+    letter-spacing: 2px;
+    color: #000000;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+div.wishCancelButton{
+    float: right;
+    margin: 15px 15px 5px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 9px 18px 7px 18px;
+    background-color: #ffffff;
+    letter-spacing: 2px;
+    color: #000000;
+    border-radius: 10px;
+    width: 15%;
+    cursor: pointer;
+    text-align: center;
+}
+div.wishCancelButton:hover, div.wishSaveButton:hover{
+    color: #ffffff;
+    background-color: #000000;
+}
+
 
 
 

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WishDto {
     private Long id;
-    //private Long owner_id;
+    //private UserDto owner;
     private String title;
     private String link;
     private String description;
@@ -34,5 +34,15 @@ public class WishDto {
         return wishEntityList.stream()
                 .map(WishDto::mapEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    public static WishEntity mapDtoToEntity(WishDto wishDto) {
+        return WishEntity.builder()
+                //.wishOwner(wishDto.getOwner())
+                .title(wishDto.getTitle())
+                .link(wishDto.getLink())
+                .description(wishDto.getDescription())
+                .build();
+
     }
 }
