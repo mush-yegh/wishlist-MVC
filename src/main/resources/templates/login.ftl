@@ -15,10 +15,6 @@
 
 </head>
 <body>
-<!-- <#if error??>
-    <div class="alert alert-danger">Wrong username/password</div>
-</#if> -->
-
 
 <ul class="topNav">
     <li class="item">
@@ -67,7 +63,11 @@
             });
         });
     </script>
-
-
+</div>
+<#if error??>
+    <div id="info" class="infoMsg" style="display: block;">
+        <p id="infoText" style="color: #ff0000;">Wrong Email / Password</p>
+    </div>
+</#if>
 </body>
 </html>
