@@ -39,7 +39,7 @@ function getWishList(){
                     wishRow.attr('class', 'wishListRow');
                     wishRow.attr('id', element.id);
                     wishRow.append("<span class='wishTitle'>" + element.title + "</span>");
-                    wishRow.append("<span class='wishRowIcon' title='Delete'><i class='fa fa-trash'></i></span>");
+                    wishRow.append("<span class='wishRowIcon' id='wishRowIconDelete' title='Delete'><i class='fa fa-trash'></i></span>");
                     wishRow.append("<span class='wishRowIcon' id='wishRowIconEdit' title='Edit'><i class='fa fa-edit'></i></span>");
                     wishRow.append("<div class='clear'></div>");
                     $simplebarContent.append(wishRow);
@@ -65,7 +65,9 @@ function getWishList(){
 //=================== /WishList ===================
 
 
-//=================== ADD WISH BLOCK ===================
+//=================== AddNewWish ===================
+
+    //=================== AddNewWish Block ===================
 
 $(document).on("click", "#wishRowIconAdd", function () {
     loaderOn();
@@ -134,17 +136,18 @@ function createButtons(saveButtonId, cancelButtonId){
     wishRow.append("<div class='clear'></div>");
     return wishRow;
 }
-//=================== /ADD WISH BLOCK ===================
 
+    //=================== /AddNewWish Block ===================
 
-//=================== ADD WISH BLOCK CANCEL BUTTON CLICK ===================
+    //=================== AddNewWish cancel button click ===================
 
 $(document).on("click", "#cancelNewWish", function () {
     $("#wishList").trigger( "click" );
 });
-//=================== /ADD WISH BLOCK CANCEL BUTTON CLICK ===================
 
-//=================== ADD_WISH_BLOCK SAVE BUTTON CLICK ===================
+    //=================== /AddNewWish cancel button click ===================
+
+    //=================== AddNewWish Save button click ===================
 
 $(document).on("click", "#saveNewWish", function () {
     let title = $('#wishTitle').val();
@@ -188,13 +191,17 @@ $(document).on("click", "#saveNewWish", function () {
 
 });
 
-//=================== /ADD_WISH_BLOCK SAVE BUTTON CLICK ===================
+    //=================== /AddNewWish Save button click ===================
 
-//=================== EDIT WISH BLOCK ===================
+//=================== AddNewWish ===================
+
+
+//=================== EditWish ===================
+
+    //=================== EditWish block ===================
 
 $(document).on("click", "#wishRowIconEdit", function () {
     let $rowId = $(this).parent('.wishListRow').attr('id');
-    //console.log($rowId);
 
     loaderOn();
     $('.homeContent').hide();
@@ -216,10 +223,6 @@ $(document).on("click", "#wishRowIconEdit", function () {
             $("#wishList").trigger( "click" );
         }
     });
-    console.log($wish.title);
-    //let respBody = $wish.wishTitle;
-    ///console.log(respBody);
-
 
     let wishBlock = $('<div/>');
     wishBlock.attr('class', 'newWishBlock');
@@ -244,10 +247,9 @@ $(document).on("click", "#wishRowIconEdit", function () {
     },700);
 
 });
-//=================== /EDIT WISH BLOCK ===================
+    //=================== /EditWish block ===================
 
-//=================== EDIT_WISH_BLOCK Save button click ===================
-
+    //=================== EditWish Save button click ===================
 
 $(document).on("click", "#saveEditedWish", function () {
     let title = $('#wishTitle').val();
@@ -292,4 +294,43 @@ $(document).on("click", "#saveEditedWish", function () {
 
 });
 
-//=================== /EDIT_WISH_BLOCK Save button click ===================
+    //=================== /EditWish Save button click ===================
+
+//=================== /EditWish ===================
+
+//=================== DeleteWish ===================
+$(document).on("click", "#wishRowIconDelete", function () {
+    loaderOn();
+
+    let $wishId = $(this).parent('.wishListRow').attr('id');
+
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+
+    $.ajax({
+        type: "DELETE",
+        contentType: "text/plain",
+        url: "/wishes/"+$wishId,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            console.log("wish deleted successfully");
+            //$("#wishList").trigger( "click" );
+            $("#"+$wishId).slideUp();
+            setTimeout(function () {
+                loaderOff();
+            },500);
+        },
+        error: function (e) {
+            let jsonErr = e.responseText;
+            console.log("wish delete error = "+jsonErr);
+            showInfo("ooops... something went wrong!");
+        }
+    });
+
+});
+//=================== / DeleteWish ===================

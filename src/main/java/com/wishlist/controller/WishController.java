@@ -57,4 +57,19 @@ public class WishController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteWishById(Authentication auth, @PathVariable String id){
+        Long wishId;
+        try {
+            wishId = Long.parseLong(id);
+        }catch (NumberFormatException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Boolean isDeleted  = service.deleteWishById(auth, wishId);
+        if (isDeleted){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//204
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

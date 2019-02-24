@@ -21,8 +21,8 @@ public class WishService {
 
     public List<WishDto> findUserWishList(Authentication auth){
         UserEntity loggedInUser = findLoggedInUser(auth);
-        List<WishEntity> userWishlist = repository.findAllByWishOwner(loggedInUser);
-        return WishDto.mapEntityListToDtoList(userWishlist);
+        List<WishEntity> userWishList = repository.findAllByWishOwner(loggedInUser);
+        return WishDto.mapEntityListToDtoList(userWishList);
     }
 
     public Optional<WishDto> createWish(Authentication auth, WishDto wishDto) {
@@ -53,5 +53,15 @@ public class WishService {
 
         WishEntity updatedWish = repository.save(wishToUpdate);
         return Optional.of(WishDto.mapEntityToDto(updatedWish));
+    }
+
+    public Boolean deleteWishById(Authentication auth, Long wishId) {
+        UserEntity loggedInUser = findLoggedInUser(auth);
+        Optional<WishEntity> wishEntity = Optional.of(repository.findOneByIdAndWishOwner(wishId,loggedInUser));
+        if (wishEntity.isPresent()) {
+            repository.delete(wishEntity.get());
+            return true;
+        }
+        return false;
     }
 }
