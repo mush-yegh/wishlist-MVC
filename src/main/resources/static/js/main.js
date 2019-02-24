@@ -40,6 +40,11 @@ $(document).ready(function () {
         check();
     });
 
+    //load friend.js
+    $.getScript("js/friend.js", function (e) {
+        checkFriend();
+    });
+
     //load wish.js
     $.getScript("js/wish.js", function (e) {
         console.log("wish loaded");

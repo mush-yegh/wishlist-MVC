@@ -212,7 +212,7 @@ $(document).on("click", "#wishRowIconEdit", function () {
         type: "GET",
         contentType: "text/plain",
         url: "/wishes/"+$rowId,
-        async: false,
+        async: false,//I know this is so bad
         success: function (data) {
             $wish = data;
         },

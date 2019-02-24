@@ -1,12 +1,11 @@
 package com.wishlist.persistance.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -58,5 +57,13 @@ public class UserEntity {
     @OneToMany(mappedBy = "wishOwner")
     @JsonBackReference
     private List<WishEntity> wishEntities;
+
+    /*@OneToMany(mappedBy = "friendOwner")
+    @JsonBackReference
+    private List<FriendEntity> friendOwner;*/
+
+    @OneToMany(mappedBy = "friend")
+    @JsonBackReference
+    private List<FriendEntity> friends;
 }
 

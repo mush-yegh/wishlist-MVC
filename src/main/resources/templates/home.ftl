@@ -59,7 +59,7 @@
     <li class="item"><p id="users">Users</p></li>
     <li class="item"><p id="friends">Friends</p></li>
     <li class="item"><p id="sentRequests">Sent Requests</p></li>
-    <li class="item"><p id="receivedRequests">Received Request</p></li>
+    <li class="item"><p id="receivedRequests">Received Requests</p></li>
     <li class="item">
         <div class="logoutDiv">
             <a href="#" onclick="document.getElementById('logout').submit();">Logout</a>
