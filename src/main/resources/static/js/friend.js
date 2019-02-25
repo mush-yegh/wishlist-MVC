@@ -3,7 +3,16 @@ function checkFriend() {
 }
 
 $('#friends').click(function () {
-    getFriends();
+    loaderOn();
+    $('.homeContent').hide();
+    $( "div.simplebar-content > div" ).remove();
+
+    $.when(getFriends()).done(function(){
+        setTimeout(function () {
+            loaderOff();
+            $('.homeContent').fadeIn('slow');
+        },700);
+    });
 });
 
 function getFriends() {
@@ -23,16 +32,16 @@ function getFriends() {
 
             $.each(data, function (index, element) {
                 let row = $('<div/>');
-                row.attr('id', element.id);
-                row.attr('class', 'userRow');
-                row.text(element.friend.firstName + " " + element.friend.lastName);
+                row.attr('id', 'friend_'+element.id);
+                row.attr('class', 'friendRow');
+                row.append("<span class='friendFullName'>"+ (index+1) +") "+ element.firstName + " " + element.lastName+"</span");
+                row.append("<span class='friendBD'>"+element.birthDate+"</span");
+                row.append("<div class='clear'></div>");
 
-                /*let icon = $('<span/>');
-                icon.attr('class', 'sendRequestIcon');
-                icon.attr('title','Send friend request');
-                icon.append('<i class="fa fa-plus" aria-hidden="true"></i>');
+                let $friendWishList = element.wishList;
+                let $frWishBlock = createWishBlock($friendWishList);
 
-                row.append(icon);*/
+                row.append($frWishBlock);
 
                 $( "div.simplebar-content" ).append(row);
             });
@@ -45,3 +54,42 @@ function getFriends() {
     });
 
 }
+
+function createWishBlock(wishList) {
+    let $wishBlock = $('<div/>');
+    $wishBlock.attr('class', 'friendWishBlock');
+
+    if (wishList.length !== 0){
+        $.each(wishList, function (index, wish) {
+            let $wishItem = $('<div/>');
+            $wishItem.attr('class', 'wishItem');
+
+            $wishItem.append("<div class='wishItemNum'>"+(index+1)+"</div>");
+
+
+            $wishItem.append("<div class='wishTitle'>Title:</div>");
+            $wishItem.append("<div class='wishTitleText'>"+wish.title+"</div>");
+            $wishItem.append("<div class='clear'></div>");
+            $wishItem.append("<div class='wishLink'>Link:</div>");
+            $wishItem.append("<div class='wishLinkText'>"+wish.title+"</div>");
+            $wishItem.append("<div class='clear'></div>");
+            $wishItem.append("<div class='wishDescription'>Description:</div>");
+            $wishItem.append("<div class='wishDescriptionText'>"+wish.description+"</div>");
+            $wishItem.append("<div class='clear'></div>");
+
+            $wishBlock.append($wishItem);
+        });
+    }
+    else {
+        $wishBlock.append("<div class='emptyWishList'>wishList is empty</div>");
+    }
+    return $wishBlock;
+
+}
+
+$(document).on("click", "div.friendRow", function () {
+
+    $(this).children('.friendWishBlock').slideToggle();
+    $(this).toggleClass( "friendRow_withoutShadow" );
+});
+

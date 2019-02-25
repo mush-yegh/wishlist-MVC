@@ -18,10 +18,6 @@ public class FriendEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_one_id")
-    @JsonManagedReference
-    private UserEntity friendOwner;*/
     @Column(name = "user_one_id")
     private Long userOneId;
 

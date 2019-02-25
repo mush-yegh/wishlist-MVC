@@ -58,10 +58,6 @@ public class UserEntity {
     @JsonBackReference
     private List<WishEntity> wishEntities;
 
-    /*@OneToMany(mappedBy = "friendOwner")
-    @JsonBackReference
-    private List<FriendEntity> friendOwner;*/
-
     @OneToMany(mappedBy = "friend")
     @JsonBackReference
     private List<FriendEntity> friends;
