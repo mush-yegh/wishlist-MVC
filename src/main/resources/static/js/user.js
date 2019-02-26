@@ -21,7 +21,6 @@ function getUsers() {
                 let row = $('<div/>');
                 row.attr('id', element.id);
                 row.attr('class', 'userRow');
-                    //console.log("elem = " + element.firstName);
                 row.text(element.firstName + " " + element.lastName);
 
                 let icon = $('<span/>');

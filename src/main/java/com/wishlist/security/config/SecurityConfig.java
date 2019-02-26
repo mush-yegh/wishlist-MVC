@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -93,6 +95,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        provider.setPasswordEncoder(passwordEncoder);
        return provider;
    }*/
+   /*@Bean(name = "myAuth")
+    public Authentication getAuthentication(){
+       return SecurityContextHolder.getContext().getAuthentication();
+   }*/
+
 
 
 

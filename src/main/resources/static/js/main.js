@@ -149,14 +149,14 @@ $(document).ready(function () {
 
     function notify(data) {
         let RespBody = JSON.parse(data).body;
-            console.log("resp" + RespBody);
+            console.log("resp " + RespBody);
         let notifType = RespBody.notifType;
             console.log("notifType " + notifType);
 
         let recipientId = RespBody.recipientId;
             console.log("recipient id " + recipientId);
         let Sender = RespBody.sender;
-            console.log("sender id = " + Sender.id);
+            //console.log("sender id = " + Sender.id);
         if (recipientId === loggedInUserId) {
             if (notifType === 'friendRequest'){
 
@@ -171,9 +171,31 @@ $(document).ready(function () {
                     $('#notifMsgBlock').fadeIn('slow');
                 },10000);
 
+            }else if (notifType === 'bd'){
+                //alert("upcoming bd");
+                $("#beep")[0].play();
+
+                let $bdBlock = $('<div/>');
+                $bdBlock.attr('id', 'bdBlock');
+                $bdBlock.attr('class', 'bdBlock');
+
+                let $bdNotifyBlock = $('<div/>');
+                $bdNotifyBlock.attr('class', 'bdNotifyBlock');
+                $bdNotifyBlock.append("<p>Today <span>"+Sender.firstName + ' ' + Sender.lastName+"</span> 's birthday!</p>");
+
+                $bdNotifyBlock.text()
+
+                $bdBlock.append($bdNotifyBlock);
+                $('body').append($bdBlock);
+                
+                $('#bdBlock').fadeIn('slow');
+                setTimeout(function () {
+                    $('#bdBlock').fadeOut('slow');
+                    //$('#bdBlock').remove();
+                }, 4200);
             }
 
-        } else {
+        }else {
             console.log("not for you!");
         }
     }

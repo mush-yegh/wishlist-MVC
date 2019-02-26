@@ -55,4 +55,8 @@ public class UserService {
         UserEntity userEntity = userRepository.findOneById(id);
         return UserDto.mapEntityToDto(userEntity);
     }
+
+    public List<UserEntity> findAllUsers() {
+        return userRepository.findAllByState(State.ACTIVE);
+    }
 }

@@ -6,6 +6,7 @@ import com.wishlist.service.RequestService;
 import com.wishlist.service.dto.RequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import com.wishlist.service.dto.SocketResponseDto;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class RequestController {
     public ResponseEntity<?> sendFriendRequest(@RequestBody String rId, Authentication auth) throws Exception {
 
         Long recipientId = Long.parseLong(rId);
-            System.out.println("recipientId = " + recipientId);
+            //System.out.println("recipientId = " + recipientId);
 
         //TO DO check if loggedInUser can send request to receiver IMPORTANT
         requestService.saveRequest(auth, recipientId);
@@ -99,4 +100,6 @@ public class RequestController {
             return new ResponseEntity<>(receivedRequests, HttpStatus.OK);
         return new ResponseEntity<>(Optional.empty(), HttpStatus.NO_CONTENT);
     }
+
+
 }
