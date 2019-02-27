@@ -13,8 +13,8 @@
 
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
 
-    <script src="/js/jquery-3.0.0.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="js/libs/jquery-3.0.0.min.js"></script>
+    <script src="js/main.js"></script>
 
 </head>
 <body>

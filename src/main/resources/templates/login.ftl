@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/css/owl.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
 
-    <script src="/js/jquery-3.0.0.min.js" type="text/javascript"></script>
+    <script src="js/libs/jquery-3.0.0.min.js" type="text/javascript"></script>
 
 </head>
 <body>

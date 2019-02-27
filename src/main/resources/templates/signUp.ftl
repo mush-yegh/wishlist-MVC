@@ -6,13 +6,10 @@
     <title>WishList web-app</title>
     <link rel="icon" type="/image/png" href="/img/favicon.ico"/>
 
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/css/owl.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <script src="/js/jquery-3.0.0.min.js"></script>
-    <script src="/js/bootstrap-datepicker.min.js"></script>
-
+    <script src="js/libs/jquery-3.0.0.min.js"></script>
+    <script src="js/libs/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
 

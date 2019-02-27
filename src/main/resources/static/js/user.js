@@ -1,6 +1,22 @@
-function check() {
+function checkUser() {
     console.log("user.js loaded!");
 }
+
+$('#users').click(function () {
+    loaderOn();
+    $('.homeContent').hide();
+    $( "div.simplebar-content > div" ).remove();
+
+    //getUsers();//call to user.js ajax
+    $.when(getUsers()).done(function(){
+        console.log( "getUsers done" );
+        setTimeout(function () {
+            loaderOff();
+            $('.homeContent').fadeIn('slow');
+        },700);
+
+    });
+});
 
 function getUsers() {
 
@@ -39,5 +55,26 @@ function getUsers() {
             alert(e.status);
         }
     });
+}
 
+//user_row '+' icon click
+$(document).on("click", "span.sendRequestIcon", function () {
+    //prevent double click
+    $(this).unbind();
+
+    let recipientId = $(this).parent().attr("id");
+
+    stompClient.send("/app/srvSocket", {}, recipientId);
+
+    hideUserRow(recipientId);
+    showInfo('Request successfully sent!');
+
+});
+
+function hideUserRow(userId) {
+    let $userRow = $('#'+userId);
+    $userRow.slideUp();
+    setTimeout(function () {
+        $userRow.remove();
+    }, 1000);
 }
