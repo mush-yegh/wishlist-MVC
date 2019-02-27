@@ -13,8 +13,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableScheduling
 @SpringBootApplication
 @ComponentScan(basePackages = "com.wishlist")
-@EntityScan(basePackages = "com.wishlist.persistance.entity")
-@EnableJpaRepositories(basePackages = "com.wishlist.persistance.repository")
+@EntityScan(basePackages = "com.wishlist.persistence.entity")
+@EnableJpaRepositories(basePackages = "com.wishlist.persistence.repository")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

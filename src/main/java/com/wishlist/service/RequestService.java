@@ -1,13 +1,13 @@
 package com.wishlist.service;
 
 import com.wishlist.service.dto.RequestDto;
-import com.wishlist.persistance.entity.Status;
+import com.wishlist.persistence.entity.Status;
 import org.springframework.stereotype.Service;
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.entity.RequestEntity;
+import com.wishlist.persistence.entity.UserEntity;
+import com.wishlist.persistence.entity.RequestEntity;
 import org.springframework.security.core.Authentication;
-import com.wishlist.persistance.repository.UserRepository;
-import com.wishlist.persistance.repository.RequestRepository;
+import com.wishlist.persistence.repository.UserRepository;
+import com.wishlist.persistence.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -26,7 +26,6 @@ public class RequestService {
 
     public RequestDto saveRequest(Authentication auth, Long recipId) {
         Long loggedInUserId = findLoggedInUser(auth).getId();
-//        RequestEntity requestEntity = mapDtoToEntity(requestDto);
         RequestEntity requestEntity = RequestEntity.builder()
                 .sentRequestOwner(userRepository.findOneById(loggedInUserId))
                 .receivedRequestOwner(userRepository.findOneById(recipId))

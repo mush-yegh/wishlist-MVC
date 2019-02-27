@@ -1,4 +1,4 @@
-package com.wishlist.persistance.entity;
+package com.wishlist.persistence.entity;
 
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;

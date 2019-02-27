@@ -1,7 +1,7 @@
 package com.wishlist.security.details;
 
-import com.wishlist.persistance.entity.State;
-import com.wishlist.persistance.entity.UserEntity;
+import com.wishlist.persistence.entity.State;
+import com.wishlist.persistence.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

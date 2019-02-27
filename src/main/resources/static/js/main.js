@@ -20,15 +20,6 @@ $(document).ready(function () {
     }, 3000);
 
 
-    /*const $loader = $('#loader');
-    //LOADING gif block show - hide
-    function loaderOn(){
-        $loader.fadeIn('fast');
-    }
-    function loaderOff(){
-        $loader.hide();
-    }*/
-
     //=================== /UI ANIMATIONS ===================
 
     //=================== LOAD OTHER SCRIPTS ===================
@@ -76,13 +67,6 @@ $(document).ready(function () {
     });
     //=================== /USER ===================
 
-    /*
-    //load request.js
-    $.getScript( "js/request.js",function (e) {
-        check();
-
-    });
-    */
 
     //=================== WEB SOCKET===================
     let socket;
@@ -104,19 +88,7 @@ $(document).ready(function () {
         });
     });
 
-    /*function sendFriendRequest(recipientId) {
-        $.ajax('/app/srvSocket', {
-            type: 'POST',
-            data: recipientId,
-            contentType: 'text/plain',
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                alert("successfully sent!!!");
-            }
-        });
-    }*/
+
 
     //user row + icon click
     $(document).on("click", "span.sendRequestIcon", function () {
@@ -124,20 +96,12 @@ $(document).ready(function () {
         $(this).unbind();
 
         let recipientId = $(this).parent().attr("id");
-        //sendRequest(currId, userToId);
-        //let data = {};
-        //data['recipientId'] = recipientId;
-        //stompClient.send("/app/srvSocket", {}, JSON.stringify(data));
 
         stompClient.send("/app/srvSocket", {}, recipientId);
 
         hideUserRow(recipientId);
         showInfo('Request successfully sent!');
 
-        /*$.when( stompClient.send("/app/srvSocket", {}, recipientId) ).done(function(){
-            hideUserRow(recipientId);
-            showInfo('Request successfully sent!');
-        });*/
     });
     function hideUserRow(userId) {
         let $userRow = $('#'+userId);
@@ -286,34 +250,6 @@ $(document).ready(function () {
 
     //=================== /ACCEPT REQUEST ===================
 
-    /*function showInfo(msg) {
-        $('#infoText').text(msg);
-
-        const $info = $('#info');
-        $info.fadeIn('slow');
-        setTimeout(function () {
-            $info.fadeOut('slow');
-        }, 3000);
-    }*/
-
-
-    /*
-    $('.notifIconBlock').click(function (event) {
-        event.stopPropagation();
-        $('#notifEmpty').fadeIn( "slow" );
-
-        setTimeout(function () {
-            $('#notifEmpty').fadeOut( "slow" );
-        }, 3000 );
-    });*/
-
-
-
-
-
-
-
-
 
     //=================== SENT REQUESTS ===================
     //show sent requests
@@ -444,7 +380,7 @@ $(document).ready(function () {
     //=================== DRAFT ===================
 
     /////////////////////////////////////////
-    $(function(){
+   /* $(function(){
         //function1().done(function(){
             // function1 is done, we can now call function2
           //  console.log('function1 is done!');
@@ -464,7 +400,7 @@ $(document).ready(function () {
             dfd.resolve();
         }, 2000);
         return dfd.promise();
-    }
+    }*/
 
     /*function function1(){
         var dfrd1 = $.Deferred();

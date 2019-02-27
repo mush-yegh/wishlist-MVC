@@ -1,8 +1,8 @@
-package com.wishlist.persistance.repository;
+package com.wishlist.persistence.repository;
 
-import com.wishlist.persistance.entity.RequestEntity;
-import com.wishlist.persistance.entity.Status;
-import com.wishlist.persistance.entity.UserEntity;
+import com.wishlist.persistence.entity.RequestEntity;
+import com.wishlist.persistence.entity.Status;
+import com.wishlist.persistence.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

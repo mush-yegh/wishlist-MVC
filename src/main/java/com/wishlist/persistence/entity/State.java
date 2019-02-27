@@ -1,4 +1,4 @@
-package com.wishlist.persistance.entity;
+package com.wishlist.persistence.entity;
 
 public enum State {
     ACTIVE, BANNED, DELETED

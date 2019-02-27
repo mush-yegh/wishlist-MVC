@@ -4,8 +4,7 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.wishlist.persistance.entity.Status;
-import com.wishlist.persistance.entity.RequestEntity;
+import com.wishlist.persistence.entity.RequestEntity;
 
 import java.util.List;
 import java.time.LocalDate;
@@ -24,16 +23,6 @@ public class RequestDto {
     private String status;
     private LocalDate requestDate;
     private LocalDate responseDate;
-
-    /*public static RequestEntity mapDtoToEntity(RequestDto requestDto){
-        return RequestEntity.builder()
-                //.sentRequestOwner()
-                //.senderId(Long.parseLong(requestDto.getSenderId()))
-                //.recipientId(Long.parseLong(requestDto.getRecipientId()))
-                .status(Status.PENDING)
-                .requestDate(LocalDate.now())
-                .build();
-    }*/
 
     public static RequestDto mapEntityToDto(RequestEntity requestEntity){
         return RequestDto.builder()

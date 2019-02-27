@@ -68,13 +68,28 @@ function createWishBlock(wishList) {
 
 
             $wishItem.append("<div class='wishTitle'>Title:</div>");
-            $wishItem.append("<div class='wishTitleText'>"+wish.title+"</div>");
+            //$wishItem.append("<div class='wishTitleText'>"+wish.title+"</div>");
+            let $wishTitleText = $('<div/>');
+            $wishTitleText.attr('class','wishTitleText');
+            $wishTitleText.text(wish.title);
+            $wishItem.append($wishTitleText);
+
             $wishItem.append("<div class='clear'></div>");
+
             $wishItem.append("<div class='wishLink'>Link:</div>");
-            $wishItem.append("<div class='wishLinkText'>"+wish.title+"</div>");
+            let $wishLinkText = $('<div/>');
+            $wishLinkText.attr('class','wishLinkText')
+            $wishLinkText.text(wish.link)
+            $wishItem.append($wishLinkText);
+
             $wishItem.append("<div class='clear'></div>");
+
             $wishItem.append("<div class='wishDescription'>Description:</div>");
-            $wishItem.append("<div class='wishDescriptionText'>"+wish.description+"</div>");
+            let $wishDescriptionText = $('<div/>');
+            $wishDescriptionText.attr('class', 'wishDescriptionText');
+            $wishDescriptionText.text(wish.description);
+            $wishItem.append($wishDescriptionText);
+
             $wishItem.append("<div class='clear'></div>");
 
             $wishBlock.append($wishItem);

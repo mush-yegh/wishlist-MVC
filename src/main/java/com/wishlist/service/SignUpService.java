@@ -1,16 +1,16 @@
 package com.wishlist.service;
 
-import com.wishlist.persistance.entity.Role;
-import com.wishlist.persistance.entity.State;
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.repository.UserRepository;
 import com.wishlist.service.dto.UserDto;
+import com.wishlist.persistence.entity.Role;
+import com.wishlist.persistence.entity.State;
+import org.springframework.stereotype.Service;
+import com.wishlist.persistence.entity.UserEntity;
+import com.wishlist.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class SignUpService {

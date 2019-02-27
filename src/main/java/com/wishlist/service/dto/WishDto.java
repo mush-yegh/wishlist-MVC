@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.wishlist.persistance.entity.WishEntity;
+import com.wishlist.persistence.entity.WishEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WishDto {
     private Long id;
-    //private UserDto owner;
     private String title;
     private String link;
     private String description;
@@ -38,7 +37,6 @@ public class WishDto {
 
     public static WishEntity mapDtoToEntity(WishDto wishDto) {
         return WishEntity.builder()
-                //.wishOwner(wishDto.getOwner())
                 .title(wishDto.getTitle())
                 .link(wishDto.getLink())
                 .description(wishDto.getDescription())

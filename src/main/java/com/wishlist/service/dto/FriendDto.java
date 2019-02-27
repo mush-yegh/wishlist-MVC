@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.wishlist.persistance.entity.WishEntity;
-import com.wishlist.persistance.entity.FriendEntity;
+import com.wishlist.persistence.entity.WishEntity;
+import com.wishlist.persistence.entity.FriendEntity;
 
 import java.util.List;
 import java.time.LocalDate;

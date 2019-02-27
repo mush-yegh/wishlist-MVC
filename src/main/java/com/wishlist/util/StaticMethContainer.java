@@ -1,6 +1,6 @@
 package com.wishlist.util;
 
-import com.wishlist.persistance.entity.UserEntity;
+import com.wishlist.persistence.entity.UserEntity;
 import com.wishlist.security.details.UserDetailsImpl;
 import org.springframework.security.core.Authentication;
 

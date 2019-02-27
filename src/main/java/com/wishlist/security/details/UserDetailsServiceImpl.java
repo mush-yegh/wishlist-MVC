@@ -1,6 +1,6 @@
 package com.wishlist.security.details;
 
-import com.wishlist.persistance.repository.UserRepository;
+import com.wishlist.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

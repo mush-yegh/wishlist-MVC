@@ -1,4 +1,4 @@
-package com.wishlist.persistance.entity;
+package com.wishlist.persistence.entity;
 
 import lombok.Data;
 import lombok.Builder;

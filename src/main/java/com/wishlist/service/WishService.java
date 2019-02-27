@@ -2,10 +2,10 @@ package com.wishlist.service;
 
 import com.wishlist.service.dto.WishDto;
 import org.springframework.stereotype.Service;
-import com.wishlist.persistance.entity.UserEntity;
-import com.wishlist.persistance.entity.WishEntity;
+import com.wishlist.persistence.entity.UserEntity;
+import com.wishlist.persistence.entity.WishEntity;
 import org.springframework.security.core.Authentication;
-import com.wishlist.persistance.repository.WishRepository;
+import com.wishlist.persistence.repository.WishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;

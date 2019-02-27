@@ -1,11 +1,11 @@
 package com.wishlist.service;
 
-import com.wishlist.persistance.entity.UserEntity;
 import com.wishlist.service.dto.FriendDto;
 import org.springframework.stereotype.Service;
-import com.wishlist.persistance.entity.FriendEntity;
+import com.wishlist.persistence.entity.UserEntity;
+import com.wishlist.persistence.entity.FriendEntity;
 import org.springframework.security.core.Authentication;
-import com.wishlist.persistance.repository.FriendRepository;
+import com.wishlist.persistence.repository.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -27,10 +27,7 @@ public class FriendService {
     }
 
     public List<FriendDto> getFriends(UserEntity user) {
-        //Long loggedInUserId = findLoggedInUser(auth).getId();
-
         List<FriendEntity> friendEntities = repository.findAllByUserOneId(user.getId());
-
         return mapEntitiesToDtos(friendEntities);
     }
 }
