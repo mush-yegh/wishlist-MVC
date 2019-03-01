@@ -44,15 +44,8 @@ public class RequestController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/requests/reject", consumes = "text/plain")
-    public ResponseEntity<?> rejectFriendRequest(@RequestBody String id, Authentication auth) {
-        Long senderId;
-        try {
-            senderId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            System.out.println("numFormat exception");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value = "/requests/reject")
+    public ResponseEntity<?> rejectFriendRequest(@RequestBody Long senderId, Authentication auth) {
 
         Optional<?> response = requestService.rejectRequest(auth, senderId);
         if (response.isPresent()) {
@@ -62,15 +55,9 @@ public class RequestController {
         return new ResponseEntity<>("Recipient not found", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "/requests/accept", consumes = "text/plain")
-    public ResponseEntity<?> acceptFriendRequest(@RequestBody String id, Authentication auth) {
-        Long senderId;
-        try {
-            senderId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            System.out.println("numFormat exception");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value = "/requests/accept")
+    public ResponseEntity<?> acceptFriendRequest(@RequestBody Long senderId, Authentication auth) {
+
         Optional<?> response = requestService.acceptRequest(auth, senderId);
 
         if (response.isPresent()) {
