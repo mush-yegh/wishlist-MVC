@@ -1,6 +1,11 @@
 function checkNotification(){
     console.log("notification.js loaded!")
 }
+
+
+//have to remove this field soon :)
+const loggedInUserId = $('#currentUser').data("id");
+
 //=================== WEB SOCKET===================
 
 let socket;
@@ -81,12 +86,13 @@ $('#reject').click(function () {
     let token = $("meta[name='_csrf']").attr("content");
     $.ajax({
         type: "POST",
-        contentType: "text/plain",
+        contentType: "application/json",
+        data: JSON.stringify(senderId),
         url: "/requests/reject",
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        data: senderId,
+
         xhrFields: {
             withCredentials: true
         },
@@ -113,9 +119,9 @@ $('#accept').click(function () {
     let token = $("meta[name='_csrf']").attr("content");
     $.ajax({
         type: "POST",
-        contentType: "text/plain",
+        contentType: "application/json",
+        data: JSON.stringify(senderId),
         url: "/requests/accept",
-        data: senderId,
         xhrFields: {
             withCredentials: true
         },
