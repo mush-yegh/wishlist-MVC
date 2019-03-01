@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    //=================== UI ANIMATIONS ===================
     //left menu show-hide
     $('p.logo').click(function () {
         const leftMenu = $('.leftNav');
@@ -18,61 +17,61 @@ $(document).ready(function () {
             $welcomeText.remove();
         }, 1100);
     }, 3000);
+
+
+
+});// /document ready
+
+
+//loader gif block show - hide
+function loaderOn() {
+    $('#loader').fadeIn('fast');
+}
+
+function loaderOff() {
+    $('#loader').hide();
+}
+
+// show message for 3 sec
+function showInfo(msg) {
+    $('#infoText').text(msg);
+    const $info = $('#info');
+    $info.fadeIn('slow');
+    setTimeout(function () {
+        $info.fadeOut('slow');
+    }, 3000);
+}
+
+//=================== LOAD OTHER SCRIPTS ===================
+
+//load notification.js
+$.getScript("js/notification.js", function (e) {
+    checkNotification();
 });
 
-    //loader gif block show - hide
-    function loaderOn() {
-        $('#loader').fadeIn('fast');
-    }
+//load wish.js
+$.getScript("js/wish.js", function (e) {
+    checkWish();
+});
 
-    function loaderOff() {
-        $('#loader').hide();
-    }
-    // show message for 3 sec
-    function showInfo(msg) {
-        $('#infoText').text(msg);
-        const $info = $('#info');
-        $info.fadeIn('slow');
-        setTimeout(function () {
-            $info.fadeOut('slow');
-        }, 3000);
-    }
+//load user.js
+$.getScript("js/user.js", function (e) {
+    checkUser();
+});
+//load friend.js
+$.getScript("js/friend.js", function (e) {
+    checkFriend();
+});
 
-    //=================== /UI ANIMATIONS ===================
+//load request.js
+$.getScript("js/request.js", function (e) {
+    checkRequest();
+});
 
-    //=================== LOAD OTHER SCRIPTS ===================
-    //have to remove this field soon :)
-    const loggedInUserId = $('#currentUser').data("id");
-
-    //load notification.js
-    $.getScript("js/notification.js", function (e) {
-        checkNotification();
-    });
-
-    //load wish.js
-    $.getScript("js/wish.js", function (e) {
-        checkWish();
-    });
-
-    //load user.js
-    $.getScript("js/user.js", function (e) {
-        checkUser();
-    });
-    //load friend.js
-    $.getScript("js/friend.js", function (e) {
-        checkFriend();
-    });
-
-    //load request.js
-    $.getScript("js/request.js", function (e) {
-        checkRequest();
-    });
-
-    //load simplebar.js
-    $.getScript("js/simplebar.js", function (e) {
-        console.log("simplebar loaded");
-    });
-    //=================== /LOAD OTHER SCRIPTS ===================
+//load simplebar.js
+$.getScript("js/simplebar.js", function (e) {
+    console.log("simplebar loaded");
+});
+//=================== /LOAD OTHER SCRIPTS ===================
 
 
-//});// /document ready

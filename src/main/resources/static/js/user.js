@@ -1,5 +1,6 @@
 function checkUser() {
     console.log("user.js loaded!");
+    //alert(loggedInUserId);
 }
 
 $('#users').click(function () {
@@ -7,7 +8,6 @@ $('#users').click(function () {
     $('.homeContent').hide();
     $( "div.simplebar-content > div" ).remove();
 
-    //getUsers();//call to user.js ajax
     $.when(getUsers()).done(function(){
         console.log( "getUsers done" );
         setTimeout(function () {
@@ -26,7 +26,7 @@ function getUsers() {
         },
         type: "GET",
         contentType: "application/json",
-        url: "http://localhost:8080/users",
+        url: "/users",
         dataType: "json",
         cache: false,
         timeout: 600000,
